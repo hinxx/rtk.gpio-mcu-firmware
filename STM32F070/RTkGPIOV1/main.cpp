@@ -269,6 +269,7 @@ static void gpio(char pinch, char cmdch)
             case 'I': //Set as input
                 //ioPin = pin - 2;
                 gpios[ioPin].input();
+                gpios[ioPin].mode(PullNone);
             break;
 
             case 'O':
@@ -298,6 +299,16 @@ static void gpio(char pinch, char cmdch)
 
             break;
 
+            case 'U':
+
+                gpios[ioPin].mode(PullUp);
+            break;
+
+            case 'D':
+
+                gpios[ioPin].mode(PullDown);
+            break;
+
 
 
 
@@ -321,6 +332,3 @@ static void gpio(char pinch, char cmdch)
  *   ?: Read the state of this Analogue input,   eg: a?
  *      State is returned as pinch + state(0|1) eg: a0
  */
-
-
-
