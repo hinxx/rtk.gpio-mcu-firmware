@@ -41,20 +41,50 @@ static void command(char cmdch, char paramch);
 static void gpio(char pinch, char cmdch);
 static void agpio(char pinch, char cmdch);
 static void error(int code);
+static void changePinType(int pin, char pinType);
 //static void SystemClock_Config(void);
 
 static int ioPin;
+static int p;
+
+DigitalInOut DIO0(NC);
+DigitalInOut DIO1(NC);
+DigitalInOut DIO2(NC);
+DigitalInOut DIO3(NC);
+DigitalInOut DIO4(NC);
+DigitalInOut DIO5(NC);
+DigitalInOut DIO6(NC); //Commented out for debugging
+DigitalInOut DIO7(NC);
+DigitalInOut DIO8(NC);
+DigitalInOut DIO9(NC);
+DigitalInOut DIO10(NC);
+DigitalInOut DIO11(NC);
+DigitalInOut DIO12(NC);
+DigitalInOut DIO13(NC); //Commented out for debugging
+DigitalInOut DIO14(NC);
+DigitalInOut DIO15(NC);
+DigitalInOut DIO16(NC);
+DigitalInOut DIO17(NC);
+DigitalInOut DIO18(NC);
+DigitalInOut DIO19(NC);
+DigitalInOut DIO20(NC);
+DigitalInOut DIO21(NC);
+DigitalInOut DIO22(NC);
+DigitalInOut DIO23(NC);
+DigitalInOut DIO24(NC);
+DigitalInOut DIO25(NC);
+DigitalInOut DIO26(NC);
+DigitalInOut DIO27(NC);
+
 
 //Manually doing this for now. Will try and automate in the future
-
+/*
 //If we add GPIO 0 & 1
 DigitalInOut IO0(NC);
 DigitalInOut IO1(NC);
-
 //I2C Development
 DigitalInOut IO2(GPIO2);
 DigitalInOut IO3(GPIO3);
-
 DigitalInOut IO4(GPIO4);
 DigitalInOut IO5(GPIO5);
 //DigitalInOut IO6(GPIO6); //Commented out for debugging
@@ -74,7 +104,7 @@ DigitalInOut IO19(GPIO19);
 DigitalInOut IO20(GPIO20);
 DigitalInOut IO21(GPIO21);
 DigitalInOut IO22(GPIO22);
-DigitalInOut IO23(GPIO23);
+//DigitalInOut IO23(GPIO23);
 DigitalInOut IO24(GPIO24);
 DigitalInOut IO25(GPIO25);
 DigitalInOut IO26(GPIO26);
@@ -86,19 +116,28 @@ DigitalInOut IO27(GPIO27);
 //DigitalInOut IO11(NC);
 DigitalInOut IO6(NC);
 DigitalInOut IO13(NC);
-DigitalInOut GIO11(NC);
+DigitalInOut GIO11(GPIO11);
+DigitalInOut GIO23(GPIO23);
 
-AnalogIn IO11(GPIO11);
+
 
 //I2C
-DigitalInOut gpios[] = {IO0,IO1,IO2,IO3,IO4,IO5,IO6,IO7,IO8,IO9,IO10,GIO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
-AnalogIn agpios[] = {IO11};
+
+
+//DigitalInOut gpios[] = {};
+
+AnalogIn AIO11(GPIO11);
+AnalogIn AIO23(GPIO23);
+*/
+AnalogIn AIO11(GPIO11);
+AnalogIn agpios[] = {AIO11};
 //DigitalInOut gpios[] = {IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
+
 
 //I2C i2c(GPIO2,GPIO3);
 //Debug
 
-
+DigitalInOut gpios[] = {DIO0,DIO1,DIO2,DIO3,DIO4,DIO5,DIO6,DIO7,DIO8,DIO9,DIO10,DIO11,DIO12,DIO13,DIO14,DIO15,DIO16,DIO17,DIO18,DIO19,DIO20,DIO21,DIO22,DIO23,DIO24,DIO25,DIO26,DIO27};
 
 
 
@@ -267,6 +306,7 @@ static void gpio(char pinch, char cmdch)
             }
 
             case 'I': //Set as input
+            	//gpios[ioPin] =
                 //ioPin = pin - 2;
                 gpios[ioPin].input();
                 gpios[ioPin].mode(PullNone);
@@ -291,7 +331,7 @@ static void gpio(char pinch, char cmdch)
 
             case '?':
                 //ioPin = pin -2;
-                int p = gpios[ioPin].read();
+                p = gpios[ioPin].read();
                 serialPort.putc(pinch);
                 serialPort.printf(p?"1":"0");
                 serialPort.putc('\r');
@@ -332,3 +372,39 @@ static void gpio(char pinch, char cmdch)
  *   ?: Read the state of this Analogue input,   eg: a?
  *      State is returned as pinch + state(0|1) eg: a0
  */
+
+
+/*
+ *
+ *
+ * Change pin mode code. Its messy for now but will get improved.
+ *
+ *
+ */
+
+static void changePinType (int pin, char pinType) {
+
+	//First if is to select which pin.
+	switch(pin) {
+
+	case 0:
+		DigitalInOut DIO0(NC);
+		AnalogIn AIO0(NC);
+		if(pinType = 'D') {
+			//Digital In Out Pin
+			DigitalInOut DIO0(GPIO0);
+		}
+		else if(pintype = 'A') {
+			AnalogIn AIO0(GPIO0);
+		}
+		else if(pintype = 'W') {
+			PwmOut PIO0(GPIO0);
+		}
+
+
+
+	break;
+
+	}
+
+}
