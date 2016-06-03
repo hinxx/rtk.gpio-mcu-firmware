@@ -129,7 +129,11 @@ DigitalInOut GIO23(GPIO23);
 AnalogIn AIO11(GPIO11);
 AnalogIn AIO23(GPIO23);
 */
-AnalogIn AIO11(GPIO11);
+AnalogIn AIO0(NC);
+AnalogIn AIO11(NC);
+AnalogIn AIO22(NC);
+AnalogIn AIO23(NC);
+AnalogIn AIO24(NC);
 AnalogIn agpios[] = {AIO11};
 //DigitalInOut gpios[] = {IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
 
@@ -314,6 +318,7 @@ static void gpio(char pinch, char cmdch)
 
             case 'O':
                 //ioPin = pin - 2;
+            	changePinType(ioPin,'D');
                 gpios[ioPin].output();
             break;
 
@@ -388,18 +393,63 @@ static void changePinType (int pin, char pinType) {
 	switch(pin) {
 
 	case 0:
-		DigitalInOut DIO0(NC);
-		AnalogIn AIO0(NC);
+		DIO0(NC);
+		AIO0(NC);
 		if(pinType = 'D') {
 			//Digital In Out Pin
-			DigitalInOut DIO0(GPIO0);
+			DIO0(GPIO0);
 		}
-		else if(pintype = 'A') {
-			AnalogIn AIO0(GPIO0);
+		else if(pinType = 'A') {
+			AIO0(GPIO0);
 		}
-		else if(pintype = 'W') {
-			PwmOut PIO0(GPIO0);
+		else if(pinType = 'W') {
+			PIO0(GPIO0);
 		}
+		break;
+
+	case 22:
+			DIO22(NC);
+			AIO22(NC);
+			if(pinType = 'D') {
+				//Digital In Out Pin
+				DIO22(GPIO0);
+			}
+			else if(pinType = 'A') {
+				AIO22(GPIO0);
+			}
+			else if(pinType = 'W') {
+				PIO22(GPIO0);
+			}
+			break;
+
+	case 23:
+			DIO23(NC);
+			AIO23(NC);
+			if(pinType = 'D') {
+				//Digital In Out Pin
+				DIO23(GPIO0);
+			}
+			else if(pinType = 'A') {
+				AIO23(GPIO0);
+			}
+			else if(pinType = 'W') {
+				PIO23(GPIO0);
+			}
+			break;
+
+	case 24:
+			DIO24(NC);
+			AIO24(NC);
+			if(pinType = 'D') {
+				//Digital In Out Pin
+				DIO24(GPIO0);
+			}
+			else if(pinType = 'A') {
+				AIO24(GPIO0);
+			}
+			else if(pinType = 'W') {
+				PIO24(GPIO0);
+			}
 
 
 

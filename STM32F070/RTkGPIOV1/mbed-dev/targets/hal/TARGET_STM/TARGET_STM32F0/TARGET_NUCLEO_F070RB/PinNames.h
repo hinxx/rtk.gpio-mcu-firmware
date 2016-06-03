@@ -123,6 +123,8 @@ typedef enum {
     PF_1  = 0x51,
 
     // RTk.GPIO Connector Namings
+	GPIO0          = PB_11,
+	GPIO1          = PB_12,
     GPIO2          = PF_0,
     GPIO3          = PF_1,
     GPIO4          = PA_8,
