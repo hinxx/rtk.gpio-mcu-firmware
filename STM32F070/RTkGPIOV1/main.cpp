@@ -18,7 +18,7 @@ Serial serialPort(SERIAL_TX, SERIAL_RX);
 //AnyIO requests the version if V is sent
 #define VERSION_STR "RTKGPIO V0.1.3"
 //Serial baud rate
-#define BAUD_RATE 460800
+#define BAUD_RATE 230400
 
 
 //Min pin is 2, Max is 27
