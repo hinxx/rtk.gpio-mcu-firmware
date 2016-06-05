@@ -69,6 +69,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/.&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev/api&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/SoftPWM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev/hal&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev/targets&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev/targets/cmsis&quot;"/>
@@ -101,7 +102,7 @@
 									<listOptionValue builtIn="false" value="TARGET_NUCLEO_F070RB"/>
 									<listOptionValue builtIn="false" value="TARGET_LIKE_CORTEX_M0"/>
 								</option>
-								<option id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.pcrop.690192345" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.pcrop" value="false" valueType="boolean"/>
+								<option id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.pcrop.690192345" name="No data reads in code memory (-mslow-flash-data) " superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.pcrop" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.cpp.016246201" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.cpp"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.s.016246201" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.s"/>
 							</tool>
