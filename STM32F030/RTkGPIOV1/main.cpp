@@ -1,5 +1,5 @@
 /*RTk.GPIO Device Side
-Based for a STM32F070 Micronctoller on MBED
+Based for a STM32F030 Micronctoller on MBED
 Ported from David Whale's code for arduino which can be viewed at
 https://github.com/whaleygeek/anyio
 
@@ -12,13 +12,15 @@ The limitations mentioned shouldn't be as bad due to how fast the MCU can run
 #include "mbed.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "SoftPWM.h"
+#include "math.h"
 
 Serial serialPort(SERIAL_TX, SERIAL_RX);
 
 //AnyIO requests the version if V is sent
-#define VERSION_STR "RTKGPIO V0.1.3"
+#define VERSION_STR "RTKGPIO V0.1.4"
 //Serial baud rate
-#define BAUD_RATE 460800
+#define BAUD_RATE 230400
 
 
 //Min pin is 2, Max is 27
@@ -44,27 +46,24 @@ static void error(int code);
 //static void SystemClock_Config(void);
 
 static int ioPin;
+static int p;
 
-//Manually doing this for now. Will try and automate in the future
-
+//DigitalInOut
 //If we add GPIO 0 & 1
-DigitalInOut IO0(NC);
-DigitalInOut IO1(NC);
-
-//I2C Development
+DigitalInOut IO0(GPIO2);
+DigitalInOut IO1(GPIO1);
 DigitalInOut IO2(GPIO2);
 DigitalInOut IO3(GPIO3);
-
 DigitalInOut IO4(GPIO4);
 DigitalInOut IO5(GPIO5);
-//DigitalInOut IO6(GPIO6); //Commented out for debugging
+DigitalInOut IO6(GPIO6); //Commented out for debugging
 DigitalInOut IO7(GPIO7);
 DigitalInOut IO8(GPIO8);
 DigitalInOut IO9(GPIO9);
 DigitalInOut IO10(GPIO10);
-//DigitalInOut IO11(GPIO11);
+DigitalInOut IO11(GPIO11);
 DigitalInOut IO12(GPIO12);
-//DigitalInOut IO13(GPIO13); //Commented out for debugging
+DigitalInOut IO13(GPIO13); //Commented out for debugging
 DigitalInOut IO14(GPIO14);
 DigitalInOut IO15(GPIO15);
 DigitalInOut IO16(GPIO16);
@@ -79,20 +78,22 @@ DigitalInOut IO24(GPIO24);
 DigitalInOut IO25(GPIO25);
 DigitalInOut IO26(GPIO26);
 DigitalInOut IO27(GPIO27);
+//Development Lines for DIO
+//DigitalInOut IO6(NC);
+//DigitalInOut IO13(NC);
+//DigitalInOut GIO11(NC);
 
-//Debug
+//And the same for SoftPWM
+//SoftPWM PIO23(GPIO23);
 
-//DigitalInOut IO2(NC);
-//DigitalInOut IO11(NC);
-DigitalInOut IO6(NC);
-DigitalInOut IO13(NC);
-DigitalInOut GIO11(NC);
-
-AnalogIn IO11(GPIO11);
+AnalogIn AIO11(GPIO11);
+//PwmOut PIO22(GPIO22);
 
 //I2C
-DigitalInOut gpios[] = {IO0,IO1,IO2,IO3,IO4,IO5,IO6,IO7,IO8,IO9,IO10,GIO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
-AnalogIn agpios[] = {IO11};
+DigitalInOut gpios[] = {IO0,IO1,IO2,IO3,IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
+AnalogIn agpios[] = {AIO11};
+
+
 //DigitalInOut gpios[] = {IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
 
 //I2C i2c(GPIO2,GPIO3);
@@ -119,7 +120,8 @@ int main() {
     //HAL_RCC_OscConfig();
     //HAL_RCC_GetClockConfig
     serialPort.printf("SystemCoreClock = %d Hz\n",SystemCoreClock);
-
+    //PIO23.write(0.5f);
+    //PIO23.period_ms(10);
 
 
     while(1) {
@@ -269,6 +271,7 @@ static void gpio(char pinch, char cmdch)
             case 'I': //Set as input
                 //ioPin = pin - 2;
                 gpios[ioPin].input();
+                gpios[ioPin].mode(PullNone);
             break;
 
             case 'O':
@@ -290,12 +293,22 @@ static void gpio(char pinch, char cmdch)
 
             case '?':
                 //ioPin = pin -2;
-                int p = gpios[ioPin].read();
+                p = gpios[ioPin].read();
                 serialPort.putc(pinch);
                 serialPort.printf(p?"1":"0");
                 serialPort.putc('\r');
                 serialPort.putc('\n');
 
+            break;
+
+            case 'U':
+
+                gpios[ioPin].mode(PullUp);
+            break;
+
+            case 'D':
+
+                gpios[ioPin].mode(PullDown);
             break;
 
 
@@ -321,6 +334,3 @@ static void gpio(char pinch, char cmdch)
  *   ?: Read the state of this Analogue input,   eg: a?
  *      State is returned as pinch + state(0|1) eg: a0
  */
-
-
-

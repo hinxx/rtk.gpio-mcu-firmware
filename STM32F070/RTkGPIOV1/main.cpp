@@ -120,7 +120,7 @@ int main() {
     //HAL_RCC_OscConfig();
     //HAL_RCC_GetClockConfig
     serialPort.printf("SystemCoreClock = %d Hz\n",SystemCoreClock);
-    PIO23.write(0.5f);
+    //PIO23.write(0.5f);
     //PIO23.period_ms(10);
 
 
