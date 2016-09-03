@@ -7,70 +7,72 @@
 * https://rtkgpio.xyz
 */
 
-//Import MBED Libraries
+/* Import MBED Libraries */
 
 #include "mbed.h"
 #include <stdio.h>
 #include <stdlib.h>
-//Import third part lib to do SoftPWM
+/* Import third party lib to do SoftPWM */
 #include "SoftPWM.h"
 #include "math.h"
 
-//Setup the serial port on the default pins for the RTk.GPIO
+/* Setup the serial port on the default pins for the RTk.GPIO */
 Serial serialPort(SERIAL_TX, SERIAL_RX);
 
-//AnyIO requests the version if V is sent, Version is now compiled date
+/* AnyIO requests the version if V is sent, Version is now compiled date */
 #define VERSION_STR "RTkGPIO 2016-09-03"
 
-//Set the serial baudrate. 230400 has tested stable on all platforms. (WIN,MAC,NIX)
+/* Set the serial baudrate. 230400 has tested stable on all platforms. (WIN,MAC,NIX) */
 #define BAUD_RATE 230400
 
 
-//Define the lowest and highest GPIO pins. For this its 0-27
+/* Define the lowest and highest GPIO pins. For this its 0-27 */
 #define MIN_PIN 0
 #define MAX_PIN 27
 
-// Errors are sent back via the 'E' Response.
-//These are pre-done definitions for each error code.
+/*
+* Errors are sent back via the 'E' Response.
+* These are pre-done definitions for each error code.
+*/
 enum
 {
     ERROR_BAD_PIN_RANGE = 1,
     ERROR_UNKNOWN_COMMAND = 2
 };
 
-//Local function prototypes
+/* Local function prototypes */
+/* TO-DO - Find the simpleton way of describing above */
 
 static void command(char cmdch, char paramch);
 static void gpio(char pinch, char cmdch);
 static void agpio(char pinch, char cmdch);
 static void error(int code);
 
-
+/* TO-DO - Proper Comment */
 static int ioPin;
 static int p;
 
-
+/* TO-DO - Proper Comment */
 I2C i2c(GPIO2,GPIO3);
-
+/* TO-DO - Proper Comment */
 AnalogIn AIO11(GPIO11);
 //PwmOut PIO22(GPIO22);
 
-//DigitalInOut
-//If we add GPIO 0 & 1
+/* Define all of the IO pins as DigitalInOut */
 DigitalInOut IO0(GPIO0);
 DigitalInOut IO1(GPIO1);
 DigitalInOut IO2(GPIO2);
 DigitalInOut IO3(GPIO3);
 DigitalInOut IO4(GPIO4);
 DigitalInOut IO5(GPIO5);
-DigitalInOut IO6(GPIO6); //Commented out for debugging
+DigitalInOut IO6(GPIO6);    /* Comment out for debug mode */
 DigitalInOut IO7(GPIO7);
 DigitalInOut IO8(GPIO8);
 DigitalInOut IO9(GPIO9);
 DigitalInOut IO10(GPIO10);
 DigitalInOut IO11(GPIO11);
 DigitalInOut IO12(GPIO12);
-DigitalInOut IO13(GPIO13); //Commented out for debugging
+DigitalInOut IO13(GPIO13);  /* Comment out for debug mode */
 DigitalInOut IO14(GPIO14);
 DigitalInOut IO15(GPIO15);
 DigitalInOut IO16(GPIO16);
@@ -87,19 +89,15 @@ DigitalInOut IO26(GPIO26);
 DigitalInOut IO27(GPIO27);
 
 
-//I2C
+/* Define list of Pins */
 DigitalInOut gpios[] = {IO0,IO1,IO2,IO3,IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
 AnalogIn agpios[] = {AIO11};
 
 
 //DigitalInOut gpios[] = {IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
 
-//I2C i2c(GPIO2,GPIO3);
-//Debug
 
-
-
-
+/* Start the main program routine */
 
 int main() {
     //SystemClock_Config
@@ -109,53 +107,53 @@ int main() {
 
     //All setup as digital in.
 
-    //Setup serial
+    /* Setup the serial port at baudrate and send ready message */
     serialPort.baud(BAUD_RATE);
-    //Now the loop
     serialPort.printf("RTk.GPIO Is ready");
-    //SetSysClock(48000000);
 
-    //HAL_RCC_OscConfig();
-    //HAL_RCC_GetClockConfig
-    serialPort.printf("SystemCoreClock = %d Hz\n",SystemCoreClock);
-    //PIO23.write(0.5f);
-    //PIO23.period_ms(10);
+    /*
+    * Uncomment the below line for clock speed reporting. Useful for debugging
+    * serialPort.printf("SystemCoreClock = %d Hz\n",SystemCoreClock);
+    */
 
-
+    /* Now the main loop that repeats forever */
     while(1) {
-        //serialPort.printf("Tick\n\r");
 
+        /* Wait for the serial port to be available */
         if(serialPort.readable() == 1) {
-            //If serial available
+            /* Serial port is available, get the character sent */
             char pinch = (char) serialPort.getc();
 
+            /* TO-DO Maybe optimise this. If its not lowercase or uppercase the \r and \n check shouldn't be needed */
+            /* If its not a return or newline command */
             if(pinch != '\r' && pinch != '\n')
             {
+                /* If its a uppercase it will be a "Global" Command so send it to that handler. */
                 if(pinch >= 'A' && pinch <= 'Z') {
-                    //Upper case so its a global command
                     char paramch = (char) serialPort.getc();
                     command(pinch, paramch);
                 }
+                /* If not make sure its a lowercase command which means GPIO request */
                 else if (pinch >= 'a' && pinch <= '|')
                 {
-                    //Lower case so its a pin number for the gpio module
                     char cmdch = (char) serialPort.getc();
                     gpio(pinch, cmdch);
                 }
+                /* If it gets this far its a dud command and we don't want it */
                 else
                 {
-                    //Reject
                     error(ERROR_UNKNOWN_COMMAND);
                 }
             }
         }
 
     }
-//Main end
 }
 
-//Error function
-//Should always be E + Number with newline
+/*
+* Function to generate an error
+* Should always be E + Number with newline
+*/
 static void error(int code)
 {
     serialPort.putc('E');
@@ -164,15 +162,15 @@ static void error(int code)
     serialPort.putc('\n');
 }
 
-/*--------------------------------------------------------------------*/
-/* Process a command.
- *
- * A command is a single character that identifies the command,
- * followed by parameters. In most cases parameters are a single
- * character, but there is no need for them to be. Each command knows
- * how to detect the end of it's parameter string, be that length
- * or magic character based.
- */
+/*
+* Process a command.
+*
+* A command is a single character that identifies the command,
+* followed by parameters. In most cases parameters are a single
+* character, but there is no need for them to be. Each command knows
+* how to detect the end of it's parameter string, be that length
+* or magic character based.
+*/
 
 static void command(char cmdch, char paramch)
 {
@@ -277,7 +275,8 @@ static void command(char cmdch, char paramch)
     }
 }
 
-/*--------------------------------------------------------------------*/
+
+
 /* Process a GPIO command.
  *
  * GPIO Commands are two characters.
@@ -297,7 +296,7 @@ static void command(char cmdch, char paramch)
 
 
 static void gpio(char pinch, char cmdch)
-{
+{   /* GPIO Command Start */
 
     int pin = pinch - 'a';
     //pin = pin; //Fixes 25 pin issue
@@ -394,7 +393,7 @@ static void gpio(char pinch, char cmdch)
 
         }
     }
- }
+/* GPIO Command End */  }
 
 
 /*--------------------------------------------------------------------*/
