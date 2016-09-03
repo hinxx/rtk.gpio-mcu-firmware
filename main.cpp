@@ -1,36 +1,37 @@
-/*RTk.GPIO Device Side
-Based for a STM32F030 Micronctoller on MBED
-Ported from David Whale's code for arduino which can be viewed at
-https://github.com/whaleygeek/anyio
-
-The limitations mentioned shouldn't be as bad due to how fast the MCU can run
-
+/*
+* RTk.GPIO Microcontroller Firmware
+* Copyright (C) Ryanteck LTD. (R) 2016. Licensed under GNU GPL V3
+* For full license information please read License.MD
+*
+* Based off of AnyIO For Arduino by David Whale (@whaleygeek)
+* https://rtkgpio.xyz
 */
 
-//Setup MBED and USB
+//Import MBED Libraries
 
 #include "mbed.h"
 #include <stdio.h>
 #include <stdlib.h>
+//Import third part lib to do SoftPWM
 #include "SoftPWM.h"
 #include "math.h"
 
+//Setup the serial port on the default pins for the RTk.GPIO
 Serial serialPort(SERIAL_TX, SERIAL_RX);
 
-//AnyIO requests the version if V is sent
-#define VERSION_STR "RTKGPIO V0.1.5"
-//Serial baud rate
+//AnyIO requests the version if V is sent, Version is now compiled date
+#define VERSION_STR "RTkGPIO 2016-09-03"
+
+//Set the serial baudrate. 230400 has tested stable on all platforms. (WIN,MAC,NIX)
 #define BAUD_RATE 230400
 
 
-//Min pin is 2, Max is 27
+//Define the lowest and highest GPIO pins. For this its 0-27
 #define MIN_PIN 0
 #define MAX_PIN 27
 
-
-
 // Errors are sent back via the 'E' Response.
-
+//These are pre-done definitions for each error code.
 enum
 {
     ERROR_BAD_PIN_RANGE = 1,
@@ -43,18 +44,13 @@ static void command(char cmdch, char paramch);
 static void gpio(char pinch, char cmdch);
 static void agpio(char pinch, char cmdch);
 static void error(int code);
-//static void SystemClock_Config(void);
+
 
 static int ioPin;
 static int p;
 
-//Development Lines for DIO
-//DigitalInOut IO6(NC);
-//DigitalInOut IO13(NC);
 
 I2C i2c(GPIO2,GPIO3);
-//And the same for SoftPWM
-//SoftPWM PIO23(GPIO23);
 
 AnalogIn AIO11(GPIO11);
 //PwmOut PIO22(GPIO22);
