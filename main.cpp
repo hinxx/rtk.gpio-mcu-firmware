@@ -194,74 +194,74 @@ static void command(char cmdch, char paramch)
 
     case 'I':
 
-    	switch(paramch) {
-    		case 'W': {
-    			//Write to I2C Bus
-    			char i2cAddrN[2];
-    			int i2caddr = (int)  serialPort.getc();
-    			int i2cBlocks = (int)serialPort.getc() - 47;
-    			int curBlock = 0;
-    			char cmdBlk[2];
-    			char blockData[2];
-    			while(curBlock < i2cBlocks) {
-    				//Get Block
-    				cmdBlk[curBlock] = (int)serialPort.getc();
+        switch(paramch) {
+            case 'W': {
+                //Write to I2C Bus
+                char i2cAddrN[2];
+                int i2caddr = (int)  serialPort.getc();
+                int i2cBlocks = (int)serialPort.getc() - 47;
+                int curBlock = 0;
+                char cmdBlk[2];
+                char blockData[2];
+                while(curBlock < i2cBlocks) {
+                    //Get Block
+                    cmdBlk[curBlock] = (int)serialPort.getc();
 
-    				curBlock++;
-    			}
-    			//Write I2C Data
-    			i2c.write(i2caddr,cmdBlk,i2cBlocks);
+                    curBlock++;
+                }
+                //Write I2C Data
+                i2c.write(i2caddr,cmdBlk,i2cBlocks);
 
-    		}
-    		break;
+            }
+            break;
 
-    		case 'R': {
-    		    			//Read from I2C Bus
-    		    			char i2cAddrN[2];
-    		    			int i2caddr = (int)  serialPort.getc();
-    		    			int i2cBlocks = (int)serialPort.getc() - 47;
-    		    			int curBlock = 0;
-    		    			char cmdBlk[2];
-    		    			char blockData[2];
-    		    			while(curBlock < i2cBlocks) {
-    		    				//Get Block
-    		    				cmdBlk[curBlock] = (int)serialPort.getc();
+            case 'R': {
+                            //Read from I2C Bus
+                            char i2cAddrN[2];
+                            int i2caddr = (int)  serialPort.getc();
+                            int i2cBlocks = (int)serialPort.getc() - 47;
+                            int curBlock = 0;
+                            char cmdBlk[2];
+                            char blockData[2];
+                            while(curBlock < i2cBlocks) {
+                                //Get Block
+                                cmdBlk[curBlock] = (int)serialPort.getc();
 
-    		    				curBlock++;
-    		    			}
-    		    			//Write I2C Data
-    		    			i2c.write(i2caddr,cmdBlk,i2cBlocks);
+                                curBlock++;
+                            }
+                            //Write I2C Data
+                            i2c.write(i2caddr,cmdBlk,i2cBlocks);
 
-    		    		}
-    		    		break;
+                        }
+                        break;
 
-			case 'T':
-				static int i2caddrT =0xA8;
-						//test I2C Bus
-				char cmd[2];
-					cmd[0] = 0x00;
-					cmd[1] = 0x01;
-					i2c.write(i2caddrT,cmd,2);
+            case 'T':
+                static int i2caddrT =0xA8;
+                        //test I2C Bus
+                char cmd[2];
+                    cmd[0] = 0x00;
+                    cmd[1] = 0x01;
+                    i2c.write(i2caddrT,cmd,2);
 
-					cmd[0] = 0x13;
-					cmd[1] = 0xFF;
-					i2c.write(i2caddrT,cmd,2);
-					cmd[0] = 0x14;
-					cmd[1] = 0xFF;
-					i2c.write(i2caddrT,cmd,2);
-					cmd[0] = 0x15;
-					cmd[1] = 0xFF;
-					i2c.write(i2caddrT,cmd,2);
+                    cmd[0] = 0x13;
+                    cmd[1] = 0xFF;
+                    i2c.write(i2caddrT,cmd,2);
+                    cmd[0] = 0x14;
+                    cmd[1] = 0xFF;
+                    i2c.write(i2caddrT,cmd,2);
+                    cmd[0] = 0x15;
+                    cmd[1] = 0xFF;
+                    i2c.write(i2caddrT,cmd,2);
 
-					//Write white led
-					cmd[0] = 0x0A;
-					cmd[1] = 0xFF;
-					i2c.write(i2caddrT,cmd,2);
-					cmd[0] = 0x16;
-					i2c.write(i2caddrT,cmd,2);
+                    //Write white led
+                    cmd[0] = 0x0A;
+                    cmd[1] = 0xFF;
+                    i2c.write(i2caddrT,cmd,2);
+                    cmd[0] = 0x16;
+                    i2c.write(i2caddrT,cmd,2);
 
-				break;
-    	}
+                break;
+        }
 
     break;
 
@@ -384,7 +384,7 @@ static void gpio(char pinch, char cmdch)
 
             case 'N':
 
-            	gpios[ioPin].mode(PullNone);
+                gpios[ioPin].mode(PullNone);
             break;
 
 
