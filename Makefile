@@ -60,7 +60,7 @@ LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
 
 
 ifeq ($(DEBUG), 1)
-  CC_FLAGS += -DDEBUG -O0
+  CC_FLAGS += -DDEBUG -Os
 else
   CC_FLAGS += -DNDEBUG -Os
 endif
