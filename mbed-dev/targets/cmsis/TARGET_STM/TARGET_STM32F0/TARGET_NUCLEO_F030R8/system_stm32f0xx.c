@@ -8,7 +8,7 @@
   *
   * 1. This file provides two functions and one global variable to be called from
   *    user application:
-  *      - SystemInit(): This function is called at startup just after reset and 
+  *      - SystemInit(): This function is called at startup just after reset and
   *                      before branch to main program. This call is made inside
   *                      the "startup_stm32f0xx.s" file.
   *
@@ -98,7 +98,7 @@
 /** @addtogroup STM32F0xx_System_Private_Defines
   * @{
   */
-#if !defined  (HSE_VALUE) 
+#if !defined  (HSE_VALUE)
   #define HSE_VALUE    ((uint32_t)8000000) /*!< Default value of the External oscillator in Hz.
                                                 This value can be provided and adapted by the user application. */
 #endif /* HSE_VALUE */
@@ -121,8 +121,8 @@
   */
 
 /* Select the clock sources (other than HSI) to start with (0=OFF, 1=ON) */
-#define USE_PLL_HSE_EXTC (1) /* Use external clock */
-#define USE_PLL_HSE_XTAL (1) /* Use external xtal */
+#define USE_PLL_HSE_EXTC (0) /* Use external clock */
+#define USE_PLL_HSE_XTAL (0) /* Use external xtal */
 
 /**
   * @}
@@ -136,7 +136,7 @@
       2) by calling HAL API function HAL_RCC_GetHCLKFreq()
       3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
          Note: If you use this function to configure the system clock there is no need to
-               call the 2 first functions listed above, since SystemCoreClock variable is 
+               call the 2 first functions listed above, since SystemCoreClock variable is
                updated automatically.
   */
 uint32_t SystemCoreClock = 48000000;
@@ -186,7 +186,7 @@ void SystemInit(void)
   /* Reset SW[1:0], HPRE[3:0], PPRE[2:0], ADCPRE, MCOSEL[2:0], MCOPRE[2:0] and PLLNODIV bits */
   RCC->CFGR &= (uint32_t)0x08FFB80CU;
 #endif /* STM32F051x8 or STM32F058x8 */
-  
+
   /* Reset HSEON, CSSON and PLLON bits */
   RCC->CR &= (uint32_t)0xFEF6FFFFU;
 
@@ -221,7 +221,7 @@ void SystemInit(void)
   /* Reset USART1SW[1:0], I2C1SW, USBSW and ADCSW bits */
   RCC->CFGR3 &= (uint32_t)0xFFFFFE6CU;
   /* Set default USB clock to PLLCLK, since there is no HSI48 */
-  RCC->CFGR3 |= (uint32_t)0x00000080U;  
+  RCC->CFGR3 |= (uint32_t)0x00000080U;
 #else
  #warning "No target selected"
 #endif
@@ -234,7 +234,7 @@ void SystemInit(void)
 
   /* Enable SYSCFGENR in APB2EN, needed for 1st call of NVIC_SetVector, to copy vectors from flash to ram */
   RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
-  
+
   /* Configure the Cube driver */
   SystemCoreClock = 8000000; // At this stage the HSI is used as system clock
   HAL_Init();
@@ -328,7 +328,7 @@ void SystemCoreClockUpdate (void)
 #else
         /* HSI used as PLL clock source : SystemCoreClock = HSI/2 * PLLMUL */
         SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
-#endif /* STM32F042x6 || STM32F048xx || STM32F070x6 || 
+#endif /* STM32F042x6 || STM32F048xx || STM32F070x6 ||
           STM32F071xB || STM32F072xB || STM32F078xx || STM32F070xB ||
           STM32F091xC || STM32F098xx || STM32F030xC */
       }
@@ -347,8 +347,8 @@ void SystemCoreClockUpdate (void)
 /**
   * @brief  Configures the System clock source, PLL Multiplier and Divider factors,
   *               AHB/APBx prescalers and Flash settings
-  * @note   This function should be called only once the RCC clock configuration  
-  *         is reset to the default reset state (done in SystemInit() function).             
+  * @note   This function should be called only once the RCC clock configuration
+  *         is reset to the default reset state (done in SystemInit() function).
   * @param  None
   * @retval None
   */
@@ -374,7 +374,7 @@ void SetSysClock(void)
       }
     }
   }
-  
+
   // Output clock on MCO pin(PA8) for debugging purpose
   // HAL_RCC_MCOConfig(RCC_MCO, RCC_MCOSOURCE_SYSCLK, RCC_MCO_DIV1); // 48 MHz
 }
@@ -395,7 +395,7 @@ uint8_t SetSysClock_PLL_HSE(uint8_t bypass)
     return 0; // FAIL
   }
 
-  
+
   // Select HSE oscillator as PLL source
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   if (bypass == 0) {
@@ -410,7 +410,7 @@ uint8_t SetSysClock_PLL_HSE(uint8_t bypass)
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
       return 0; // FAIL
   }
- 
+
   // Select PLL as system clock source and configure the HCLK and PCLK1 clocks dividers
   RCC_ClkInitStruct.ClockType      = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1);
   RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK; // 48 MHz
@@ -419,9 +419,9 @@ uint8_t SetSysClock_PLL_HSE(uint8_t bypass)
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK) {
       return 0; // FAIL
   }
-  
+
 //  HAL_RCC_MCOConfig(RCC_MCO, RCC_MCOSOURCE_HSE, RCC_MCO_DIV2); // 8/2 = 4 MHz
-  
+
   return 1; // OK
 }
 #endif
@@ -433,7 +433,7 @@ uint8_t SetSysClock_PLL_HSI(void)
 {
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   RCC_OscInitTypeDef RCC_OscInitStruct;
- 
+
   // Select PLLCLK = 48 MHz ((HSI 8 MHz / 2) * 12)
   RCC_OscInitStruct.OscillatorType          = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSEState                = RCC_HSE_OFF;
@@ -451,7 +451,7 @@ uint8_t SetSysClock_PLL_HSI(void)
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
       return 0; // FAIL
   }
- 
+
   // Select PLL as system clock source and configure the HCLK and PCLK1 clocks dividers
   RCC_ClkInitStruct.ClockType      = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1);
   RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK; // 48 MHz
@@ -462,7 +462,7 @@ uint8_t SetSysClock_PLL_HSI(void)
   }
 
   //HAL_RCC_MCOConfig(RCC_MCO, RCC_MCOSOURCE_HSI, RCC_MCO_DIV4); // 8/4 = 2 MHz
-  
+
   return 1; // OK
 }
 
@@ -479,4 +479,3 @@ uint8_t SetSysClock_PLL_HSI(void)
   */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-
