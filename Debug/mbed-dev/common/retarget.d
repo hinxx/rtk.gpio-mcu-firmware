@@ -58,20 +58,15 @@ mbed-dev/common/retarget.o: ../mbed-dev/common/retarget.cpp \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PortNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PeripheralNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/common_objects.h \
+ /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h \
+ /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PortNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PeripheralNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FileHandle.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FileSystemLike.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/platform.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FileBase.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/SingletonPtr.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PlatformMutex.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FileHandle.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/DirHandle.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FilePath.h \
@@ -84,8 +79,6 @@ mbed-dev/common/retarget.o: ../mbed-dev/common/retarget.cpp \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/semihost_api.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/toolchain.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_interface.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/SingletonPtr.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PlatformMutex.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_error.h
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/platform.h:
@@ -206,19 +199,15 @@ mbed-dev/common/retarget.o: ../mbed-dev/common/retarget.cpp \
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h:
 
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/common_objects.h:
+/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h:
+
+/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PortNames.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PeripheralNames.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FileHandle.h:
 
@@ -227,12 +216,6 @@ mbed-dev/common/retarget.o: ../mbed-dev/common/retarget.cpp \
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/platform.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FileBase.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/SingletonPtr.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PlatformMutex.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FileHandle.h:
 
@@ -257,9 +240,5 @@ mbed-dev/common/retarget.o: ../mbed-dev/common/retarget.cpp \
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/toolchain.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_interface.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/SingletonPtr.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PlatformMutex.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_error.h:

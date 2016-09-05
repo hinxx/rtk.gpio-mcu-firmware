@@ -219,6 +219,7 @@
 								<option id="gnu.c.compiler.option.debugging.level.903712030" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.903712030" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/.&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/SoftPWM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev/api&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev/hal&quot;"/>
@@ -281,6 +282,7 @@
 								<option id="gnu.cpp.compiler.option.debugging.level.903712030" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.903712030" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/.&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/SoftPWM}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev/api&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-dev/hal&quot;"/>
@@ -406,4 +408,5 @@
 			<resource resourceType="PROJECT" workspacePath="/RTkGPIO-V1"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

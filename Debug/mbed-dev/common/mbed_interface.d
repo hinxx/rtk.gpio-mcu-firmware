@@ -58,13 +58,11 @@ mbed-dev/common/mbed_interface.o: ../mbed-dev/common/mbed_interface.c \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PortNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PeripheralNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/common_objects.h \
+ /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h \
+ /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PortNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PeripheralNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/gpio_api.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/wait_api.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/semihost_api.h \
@@ -190,19 +188,15 @@ mbed-dev/common/mbed_interface.o: ../mbed-dev/common/mbed_interface.c \
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h:
 
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/common_objects.h:
+/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h:
+
+/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PortNames.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PeripheralNames.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/gpio_api.h:
 

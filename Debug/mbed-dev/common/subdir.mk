@@ -9,18 +9,7 @@ C_SRCS += \
 ../mbed-dev/common/error.c \
 ../mbed-dev/common/gpio.c \
 ../mbed-dev/common/lp_ticker_api.c \
-../mbed-dev/common/mbed_assert.c \
-../mbed-dev/common/mbed_board.c \
-../mbed-dev/common/mbed_critical.c \
-../mbed-dev/common/mbed_error.c \
-../mbed-dev/common/mbed_gpio.c \
 ../mbed-dev/common/mbed_interface.c \
-../mbed-dev/common/mbed_lp_ticker_api.c \
-../mbed-dev/common/mbed_pinmap_common.c \
-../mbed-dev/common/mbed_semihost_api.c \
-../mbed-dev/common/mbed_ticker_api.c \
-../mbed-dev/common/mbed_us_ticker_api.c \
-../mbed-dev/common/mbed_wait_api.c \
 ../mbed-dev/common/pinmap_common.c \
 ../mbed-dev/common/rtc_time.c \
 ../mbed-dev/common/semihost_api.c \
@@ -29,7 +18,6 @@ C_SRCS += \
 ../mbed-dev/common/wait_api.c 
 
 CPP_SRCS += \
-../mbed-dev/common/AnalogIn.cpp \
 ../mbed-dev/common/BusIn.cpp \
 ../mbed-dev/common/BusInOut.cpp \
 ../mbed-dev/common/BusOut.cpp \
@@ -55,11 +43,9 @@ CPP_SRCS += \
 ../mbed-dev/common/Timeout.cpp \
 ../mbed-dev/common/Timer.cpp \
 ../mbed-dev/common/TimerEvent.cpp \
-../mbed-dev/common/mbed_rtc_time.cpp \
 ../mbed-dev/common/retarget.cpp 
 
 OBJS += \
-./mbed-dev/common/AnalogIn.o \
 ./mbed-dev/common/BusIn.o \
 ./mbed-dev/common/BusInOut.o \
 ./mbed-dev/common/BusOut.o \
@@ -90,19 +76,7 @@ OBJS += \
 ./mbed-dev/common/error.o \
 ./mbed-dev/common/gpio.o \
 ./mbed-dev/common/lp_ticker_api.o \
-./mbed-dev/common/mbed_assert.o \
-./mbed-dev/common/mbed_board.o \
-./mbed-dev/common/mbed_critical.o \
-./mbed-dev/common/mbed_error.o \
-./mbed-dev/common/mbed_gpio.o \
 ./mbed-dev/common/mbed_interface.o \
-./mbed-dev/common/mbed_lp_ticker_api.o \
-./mbed-dev/common/mbed_pinmap_common.o \
-./mbed-dev/common/mbed_rtc_time.o \
-./mbed-dev/common/mbed_semihost_api.o \
-./mbed-dev/common/mbed_ticker_api.o \
-./mbed-dev/common/mbed_us_ticker_api.o \
-./mbed-dev/common/mbed_wait_api.o \
 ./mbed-dev/common/pinmap_common.o \
 ./mbed-dev/common/retarget.o \
 ./mbed-dev/common/rtc_time.o \
@@ -117,18 +91,7 @@ C_DEPS += \
 ./mbed-dev/common/error.d \
 ./mbed-dev/common/gpio.d \
 ./mbed-dev/common/lp_ticker_api.d \
-./mbed-dev/common/mbed_assert.d \
-./mbed-dev/common/mbed_board.d \
-./mbed-dev/common/mbed_critical.d \
-./mbed-dev/common/mbed_error.d \
-./mbed-dev/common/mbed_gpio.d \
 ./mbed-dev/common/mbed_interface.d \
-./mbed-dev/common/mbed_lp_ticker_api.d \
-./mbed-dev/common/mbed_pinmap_common.d \
-./mbed-dev/common/mbed_semihost_api.d \
-./mbed-dev/common/mbed_ticker_api.d \
-./mbed-dev/common/mbed_us_ticker_api.d \
-./mbed-dev/common/mbed_wait_api.d \
 ./mbed-dev/common/pinmap_common.d \
 ./mbed-dev/common/rtc_time.d \
 ./mbed-dev/common/semihost_api.d \
@@ -137,7 +100,6 @@ C_DEPS += \
 ./mbed-dev/common/wait_api.d 
 
 CPP_DEPS += \
-./mbed-dev/common/AnalogIn.d \
 ./mbed-dev/common/BusIn.d \
 ./mbed-dev/common/BusInOut.d \
 ./mbed-dev/common/BusOut.d \
@@ -163,7 +125,6 @@ CPP_DEPS += \
 ./mbed-dev/common/Timeout.d \
 ./mbed-dev/common/Timer.d \
 ./mbed-dev/common/TimerEvent.d \
-./mbed-dev/common/mbed_rtc_time.d \
 ./mbed-dev/common/retarget.d 
 
 

@@ -1,6 +1,5 @@
 SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/toolchain.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/platform.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/device.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/objects.h \
@@ -60,23 +59,18 @@ SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PortNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PeripheralNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/common_objects.h \
+ /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h \
+ /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PortNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PeripheralNames.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_error.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_interface.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/DigitalIn.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/gpio_api.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/critical.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/DigitalOut.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/DigitalInOut.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/BusIn.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PlatformMutex.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/BusOut.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/BusInOut.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PortIn.h \
@@ -85,7 +79,6 @@ SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PortOut.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/AnalogIn.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/analogin_api.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/SingletonPtr.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/AnalogOut.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PwmOut.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/pwmout_api.h \
@@ -95,7 +88,7 @@ SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FileBase.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FileHandle.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/SerialBase.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/Callback.h \
+ /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FunctionPointer.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/serial_api.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/buffer.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/dma_api.h \
@@ -125,13 +118,10 @@ SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/wait_api.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/sleep_api.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/rtc_time.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FunctionPointer.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/InterruptIn.h \
  ../SoftPWM/SoftPWM.h
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/toolchain.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/platform.h:
 
@@ -251,7 +241,9 @@ SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h:
 
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/common_objects.h:
+/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h:
+
+/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PortNames.h:
 
@@ -259,31 +251,19 @@ SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/PinNames.h:
 
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_object.h:
-
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_error.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_interface.h:
 
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/mbed_assert.h:
-
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/DigitalIn.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/gpio_api.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/critical.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/DigitalOut.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/DigitalInOut.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/BusIn.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PlatformMutex.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/BusOut.h:
 
@@ -300,8 +280,6 @@ SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/AnalogIn.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/analogin_api.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/SingletonPtr.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/AnalogOut.h:
 
@@ -321,7 +299,7 @@ SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/SerialBase.h:
 
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/Callback.h:
+/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FunctionPointer.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/serial_api.h:
 
@@ -380,8 +358,6 @@ SoftPWM/SoftPWM.o: ../SoftPWM/SoftPWM.cpp \
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/hal/sleep_api.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/rtc_time.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FunctionPointer.h:
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/InterruptIn.h:
 

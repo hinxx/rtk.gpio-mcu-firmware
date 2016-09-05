@@ -55,9 +55,7 @@ mbed-dev/common/InterruptManager.o: \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/cmsis.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/InterruptManager.h \
  /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/CallChain.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/Callback.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PlatformMutex.h \
- /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/critical.h
+ /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FunctionPointer.h
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/cmsis.h:
 
@@ -169,8 +167,4 @@ mbed-dev/common/InterruptManager.o: \
 
 /Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/CallChain.h:
 
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/Callback.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/PlatformMutex.h:
-
-/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/critical.h:
+/Users/ryanwalmsley/Documents/workspace/RTkGPIO-V1/mbed-dev/api/FunctionPointer.h:

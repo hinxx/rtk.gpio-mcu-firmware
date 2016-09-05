@@ -6,11 +6,9 @@
 C_SRCS += \
 ../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/analogin_api.c \
 ../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/analogout_api.c \
-../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/can_api.c \
 ../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_api.c \
 ../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_irq_api.c \
 ../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/i2c_api.c \
-../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/lp_ticker.c \
 ../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/mbed_overrides.c \
 ../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/pinmap.c \
 ../mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/port_api.c \
@@ -24,11 +22,9 @@ C_SRCS += \
 OBJS += \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/analogin_api.o \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/analogout_api.o \
-./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/can_api.o \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_api.o \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_irq_api.o \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/i2c_api.o \
-./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/lp_ticker.o \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/mbed_overrides.o \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/pinmap.o \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/port_api.o \
@@ -42,11 +38,9 @@ OBJS += \
 C_DEPS += \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/analogin_api.d \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/analogout_api.d \
-./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/can_api.d \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_api.d \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/gpio_irq_api.d \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/i2c_api.d \
-./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/lp_ticker.d \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/mbed_overrides.d \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/pinmap.d \
 ./mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/port_api.d \
