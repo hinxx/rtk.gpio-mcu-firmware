@@ -51,10 +51,8 @@ void timer_update_irq_handler(void)
 
     // Clear Update interrupt flag
     if (__HAL_TIM_GET_FLAG(&TimMasterHandle, TIM_FLAG_UPDATE) == SET) {
-        if (__HAL_TIM_GET_IT_SOURCE(&TimMasterHandle, TIM_IT_UPDATE) == SET) {
-            __HAL_TIM_CLEAR_IT(&TimMasterHandle, TIM_IT_UPDATE);
-            SlaveCounter++;
-        }
+        __HAL_TIM_CLEAR_FLAG(&TimMasterHandle, TIM_FLAG_UPDATE);
+        SlaveCounter++;
     }
 }
 
@@ -66,35 +64,31 @@ void timer_oc_irq_handler(void)
 
     // Channel 1 for mbed timeout
     if (__HAL_TIM_GET_FLAG(&TimMasterHandle, TIM_FLAG_CC1) == SET) {
-        if (__HAL_TIM_GET_IT_SOURCE(&TimMasterHandle, TIM_IT_CC1) == SET) {
-            __HAL_TIM_CLEAR_IT(&TimMasterHandle, TIM_IT_CC1);
-            if (oc_rem_part > 0) {
-                set_compare(oc_rem_part); // Finish the remaining time left
-                oc_rem_part = 0;
+        __HAL_TIM_CLEAR_FLAG(&TimMasterHandle, TIM_FLAG_CC1);
+        if (oc_rem_part > 0) {
+            set_compare(oc_rem_part); // Finish the remaining time left
+            oc_rem_part = 0;
+        } else {
+            if (oc_int_part > 0) {
+                set_compare(0xFFFF);
+                oc_rem_part = cval; // To finish the counter loop the next time
+                oc_int_part--;
             } else {
-                if (oc_int_part > 0) {
-                    set_compare(0xFFFF);
-                    oc_rem_part = cval; // To finish the counter loop the next time
-                    oc_int_part--;
-                } else {
-                    us_ticker_irq_handler();
-                }
+                us_ticker_irq_handler();
             }
         }
     }
 
     // Channel 2 for HAL tick
     if (__HAL_TIM_GET_FLAG(&TimMasterHandle, TIM_FLAG_CC2) == SET) {
-        if (__HAL_TIM_GET_IT_SOURCE(&TimMasterHandle, TIM_IT_CC2) == SET) {
-            __HAL_TIM_CLEAR_IT(&TimMasterHandle, TIM_IT_CC2);
-            uint32_t val = __HAL_TIM_GetCounter(&TimMasterHandle);
-            if ((val - PreviousVal) >= HAL_TICK_DELAY) {
-                // Increment HAL variable
-                HAL_IncTick();
-                // Prepare next interrupt
-                __HAL_TIM_SetCompare(&TimMasterHandle, TIM_CHANNEL_2, val + HAL_TICK_DELAY);
-                PreviousVal = val;
-            }
+        __HAL_TIM_CLEAR_FLAG(&TimMasterHandle, TIM_FLAG_CC2);
+        uint32_t val = __HAL_TIM_GetCounter(&TimMasterHandle);
+        if ((val - PreviousVal) >= HAL_TICK_DELAY) {
+            // Increment HAL variable
+            HAL_IncTick();
+            // Prepare next interrupt
+            __HAL_TIM_SetCompare(&TimMasterHandle, TIM_CHANNEL_2, val + HAL_TICK_DELAY);
+            PreviousVal = val;
         }
     }
 }
@@ -134,10 +128,8 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority) {
     // Output compare channel 2 interrupt for HAL tick
     NVIC_SetVector(TIM_MST_UP_IRQ, (uint32_t)timer_update_irq_handler);
     NVIC_EnableIRQ(TIM_MST_UP_IRQ);
-    NVIC_SetPriority(TIM_MST_UP_IRQ, 0);
     NVIC_SetVector(TIM_MST_OC_IRQ, (uint32_t)timer_oc_irq_handler);
     NVIC_EnableIRQ(TIM_MST_OC_IRQ);
-    NVIC_SetPriority(TIM_MST_OC_IRQ, 1);
 
     // Enable interrupts
     __HAL_TIM_ENABLE_IT(&TimMasterHandle, TIM_IT_UPDATE); // For 32-bit counter
@@ -149,21 +141,6 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority) {
     return HAL_OK;
 }
 
-void HAL_SuspendTick(void)
-{
-    TimMasterHandle.Instance = TIM_MST;
-
-    // Disable HAL tick and us_ticker update interrupts (used for 32 bit counter)
-    __HAL_TIM_DISABLE_IT(&TimMasterHandle, (TIM_IT_CC2 | TIM_IT_UPDATE));
-}
-
-void HAL_ResumeTick(void)
-{
-    TimMasterHandle.Instance = TIM_MST;
-
-	// Enable HAL tick and us_ticker update interrupts (used for 32 bit counter)
-	__HAL_TIM_ENABLE_IT(&TimMasterHandle, (TIM_IT_CC2 | TIM_IT_UPDATE));
-}
 /**
   * @}
   */

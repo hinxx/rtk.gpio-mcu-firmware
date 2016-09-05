@@ -34,8 +34,6 @@ typedef struct {
 } transaction_t;
 
 /** Transaction class defines a transaction.
- *
- * @Note Synchronization level: Not protected
  */
 template<typename Class>
 class Transaction {

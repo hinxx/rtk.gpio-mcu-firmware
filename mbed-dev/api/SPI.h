@@ -20,9 +20,7 @@
 
 #if DEVICE_SPI
 
-#include "PlatformMutex.h"
 #include "spi_api.h"
-#include "SingletonPtr.h"
 
 #if DEVICE_SPI_ASYNCH
 #include "CThunk.h"
@@ -41,8 +39,6 @@ namespace mbed {
  * Most SPI devices will also require Chip Select and Reset signals. These
  * can be controlled using <DigitalOut> pins
  *
- * @Note Synchronization level: Thread safe
- *
  * Example:
  * @code
  * // Send a byte to a SPI slave, and record the response
@@ -60,13 +56,10 @@ namespace mbed {
  *     // hardware ssel (where applicable)
  *     //int response = device.write(0xFF);
  *
- *     device.lock();
  *     // software ssel
  *     cs = 0;
  *     int response = device.write(0xFF);
  *     cs = 1;
- *     device.unlock();
- *
  * }
  * @endcode
  */
@@ -115,14 +108,6 @@ public:
      *    Response from the SPI slave
     */
     virtual int write(int value);
-
-    /** Acquire exclusive access to this SPI bus
-     */
-    virtual void lock(void);
-
-    /** Release exclusive access to this SPI bus
-     */
-    virtual void unlock(void);
 
 #if DEVICE_SPI_ASYNCH
 
@@ -248,7 +233,6 @@ protected:
 
     void aquire(void);
     static SPI *_owner;
-    static SingletonPtr<PlatformMutex> _mutex;
     int _bits;
     int _mode;
     int _hz;

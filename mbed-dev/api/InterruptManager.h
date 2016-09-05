@@ -3,14 +3,11 @@
 
 #include "cmsis.h"
 #include "CallChain.h"
-#include "PlatformMutex.h"
 #include <string.h>
 
 namespace mbed {
 
 /** Use this singleton if you need to chain interrupt handlers.
- *
- * @Note Synchronization level: Thread safe
  *
  * Example (for LPC1768):
  * @code
@@ -55,7 +52,6 @@ public:
      *  The function object created for 'function'
      */
     pFunctionPointer_t add_handler(void (*function)(void), IRQn_Type irq) {
-        // Underlying call is thread safe
         return add_common(function, irq);
     }
 
@@ -68,7 +64,6 @@ public:
      *  The function object created for 'function'
      */
     pFunctionPointer_t add_handler_front(void (*function)(void), IRQn_Type irq) {
-        // Underlying call is thread safe
         return add_common(function, irq, true);
     }
 
@@ -83,7 +78,6 @@ public:
      */
     template<typename T>
     pFunctionPointer_t add_handler(T* tptr, void (T::*mptr)(void), IRQn_Type irq) {
-        // Underlying call is thread safe
         return add_common(tptr, mptr, irq);
     }
 
@@ -98,7 +92,6 @@ public:
      */
     template<typename T>
     pFunctionPointer_t add_handler_front(T* tptr, void (T::*mptr)(void), IRQn_Type irq) {
-        // Underlying call is thread safe
         return add_common(tptr, mptr, irq, true);
     }
 
@@ -116,9 +109,6 @@ private:
     InterruptManager();
     ~InterruptManager();
 
-    void lock();
-    void unlock();
-
     // We declare the copy contructor and the assignment operator, but we don't
     // implement them. This way, if someone tries to copy/assign our instance,
     // he will get an error at compile time.
@@ -127,14 +117,12 @@ private:
 
     template<typename T>
     pFunctionPointer_t add_common(T *tptr, void (T::*mptr)(void), IRQn_Type irq, bool front=false) {
-        _mutex.lock();
         int irq_pos = get_irq_index(irq);
         bool change = must_replace_vector(irq);
 
         pFunctionPointer_t pf = front ? _chains[irq_pos]->add_front(tptr, mptr) : _chains[irq_pos]->add(tptr, mptr);
         if (change)
             NVIC_SetVector(irq, (uint32_t)&InterruptManager::static_irq_helper);
-        _mutex.unlock();
         return pf;
     }
 
@@ -147,7 +135,6 @@ private:
 
     CallChain* _chains[NVIC_NUM_VECTORS];
     static InterruptManager* _instance;
-    PlatformMutex _mutex;
 };
 
 } // namespace mbed

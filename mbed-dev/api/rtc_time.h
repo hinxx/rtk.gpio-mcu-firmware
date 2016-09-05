@@ -58,8 +58,6 @@ extern "C" {
  *
  * @param t Number of seconds since January 1, 1970 (the UNIX timestamp)
  *
- * @Note Synchronization level: Thread safe
- *
  * Example:
  * @code
  * #include "mbed.h"
@@ -73,7 +71,7 @@ void set_time(time_t t);
 
 /** Attach an external RTC to be used for the C time functions
  *
- * @Note Synchronization level: Thread safe
+ * Do not call this function from an interrupt while an RTC read/write operation may be occurring 
  *
  * @param read_rtc pointer to function which returns current UNIX timestamp
  * @param write_rtc pointer to function which sets current UNIX timestamp, can be NULL

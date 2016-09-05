@@ -16,7 +16,6 @@
 #ifndef MBED_TICKER_API_H
 #define MBED_TICKER_API_H
 
-#include <stdint.h>
 #include "device.h"
 
 typedef uint32_t timestamp_t;
@@ -41,37 +40,32 @@ typedef struct {
     void (*set_interrupt)(timestamp_t timestamp); /**< Set interrupt function */
 } ticker_interface_t;
 
-/** Ticker's event queue structure
+/** Tickers events queue structure
  */
 typedef struct {
     ticker_event_handler event_handler; /**< Event handler */
     ticker_event_t *head;               /**< A pointer to head */
 } ticker_event_queue_t;
 
-/** Ticker's data structure
+/** Tickers data structure
  */
 typedef struct {
     const ticker_interface_t *interface; /**< Ticker's interface */
-    ticker_event_queue_t *queue;         /**< Ticker's event queue */
+    ticker_event_queue_t *queue;         /**< Ticker's events queue */
 } ticker_data_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/**
- * \defgroup hal_ticker Ticker HAL functions
- * @{
- */
-
-/** Initialize a ticker and set the event handler
+/** Initialize a ticker and sets the event handler
  *
  * @param data    The ticker's data
  * @param handler A handler to be set
  */
 void ticker_set_handler(const ticker_data_t *const data, ticker_event_handler handler);
 
-/** IRQ handler that goes through the events to trigger overdue events.
+/** Irq handler which goes through the events to trigger events in the past.
  *
  * @param data    The ticker's data
  */
@@ -80,14 +74,14 @@ void ticker_irq_handler(const ticker_data_t *const data);
 /** Remove an event from the queue
  *
  * @param data The ticker's data
- * @param obj  The event object to be removed from the queue
+ * @param obj  The event's queue to be removed
  */
 void ticker_remove_event(const ticker_data_t *const data, ticker_event_t *obj);
 
-/** Insert an event to the queue
+/** Insert an event from the queue
  *
  * @param data      The ticker's data
- * @param obj       The event object to be inserted to the queue
+ * @param obj       The event's queue to be removed
  * @param timestamp The event's timestamp
  * @param id        The event object
  */
@@ -106,8 +100,6 @@ timestamp_t ticker_read(const ticker_data_t *const data);
  * @return 1 if timestamp is pending event, 0 if there's no event pending
  */
 int ticker_get_next_timestamp(const ticker_data_t *const data, timestamp_t *timestamp);
-
-/**@}*/
 
 #ifdef __cplusplus
 }

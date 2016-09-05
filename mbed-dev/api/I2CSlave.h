@@ -26,8 +26,6 @@ namespace mbed {
 
 /** An I2C Slave, used for communicating with an I2C Master device
  *
- * @Note Synchronization level: Not protected
- *
  * Example:
  * @code
  * // Simple I2C responder

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "SPI.h"
-#include "critical.h"
 
 #if DEVICE_SPI
 
@@ -33,57 +32,38 @@ SPI::SPI(PinName mosi, PinName miso, PinName sclk, PinName ssel) :
         _bits(8),
         _mode(0),
         _hz(1000000) {
-    // No lock needed in the constructor
-
     spi_init(&_spi, mosi, miso, sclk, ssel);
-    aquire();
+    spi_format(&_spi, _bits, _mode, 0);
+    spi_frequency(&_spi, _hz);
 }
 
 void SPI::format(int bits, int mode) {
-    lock();
     _bits = bits;
     _mode = mode;
     SPI::_owner = NULL; // Not that elegant, but works. rmeyer
     aquire();
-    unlock();
 }
 
 void SPI::frequency(int hz) {
-    lock();
     _hz = hz;
     SPI::_owner = NULL; // Not that elegant, but works. rmeyer
     aquire();
-    unlock();
 }
 
 SPI* SPI::_owner = NULL;
-SingletonPtr<PlatformMutex> SPI::_mutex;
 
 // ignore the fact there are multiple physical spis, and always update if it wasnt us last
 void SPI::aquire() {
-    lock();
      if (_owner != this) {
         spi_format(&_spi, _bits, _mode, 0);
         spi_frequency(&_spi, _hz);
         _owner = this;
     }
-    unlock();
 }
 
 int SPI::write(int value) {
-    lock();
     aquire();
-    int ret = spi_master_write(&_spi, value);
-    unlock();
-    return ret;
-}
-
-void SPI::lock() {
-    _mutex->lock();
-}
-
-void SPI::unlock() {
-    _mutex->unlock();
+    return spi_master_write(&_spi, value);
 }
 
 #if DEVICE_SPI_ASYNCH
@@ -144,12 +124,7 @@ int SPI::queue_transfer(const void *tx_buffer, int tx_length, void *rx_buffer, i
     if (_transaction_buffer.full()) {
         return -1; // the buffer is full
     } else {
-        core_util_critical_section_enter();
         _transaction_buffer.push(transaction);
-        if (!spi_active(&_spi)) {
-            dequeue_transaction();
-        }
-        core_util_critical_section_exit();
         return 0;
     }
 #else

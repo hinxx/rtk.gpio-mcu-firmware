@@ -16,13 +16,9 @@
 #ifndef MBED_CIRCULARBUFFER_H
 #define MBED_CIRCULARBUFFER_H
 
-#include "critical.h"
-
 namespace mbed {
 
 /** Templated Circular buffer class
- *
- *  @Note Synchronization level: Interrupt safe
  */
 template<typename T, uint32_t BufferSize, typename CounterType = uint32_t>
 class CircularBuffer {
@@ -39,7 +35,6 @@ public:
      * @param data Data to be pushed to the buffer
      */
     void push(const T& data) {
-        core_util_critical_section_enter();
         if (full()) {
             _tail++;
             _tail %= BufferSize;
@@ -49,7 +44,6 @@ public:
         if (_head == _tail) {
             _full = true;
         }
-        core_util_critical_section_exit();
     }
 
     /** Pop the transaction from the buffer
@@ -58,16 +52,13 @@ public:
      * @return True if the buffer is not empty and data contains a transaction, false otherwise
      */
     bool pop(T& data) {
-        bool data_popped = false;
-        core_util_critical_section_enter();
         if (!empty()) {
             data = _pool[_tail++];
             _tail %= BufferSize;
             _full = false;
-            data_popped = true;
+            return true;
         }
-        core_util_critical_section_exit();
-        return data_popped;
+        return false;
     }
 
     /** Check if the buffer is empty
@@ -75,10 +66,7 @@ public:
      * @return True if the buffer is empty, false if not
      */
     bool empty() {
-        core_util_critical_section_enter();
-        bool is_empty = (_head == _tail) && !_full;
-        core_util_critical_section_exit();
-        return is_empty;
+        return (_head == _tail) && !_full;
     }
 
     /** Check if the buffer is full
@@ -86,21 +74,16 @@ public:
      * @return True if the buffer is full, false if not
      */
     bool full() {
-        core_util_critical_section_enter();
-        bool full = _full;
-        core_util_critical_section_exit();
-        return full;
+        return _full;
     }
 
     /** Reset the buffer
      *
      */
     void reset() {
-        core_util_critical_section_enter();
         _head = 0;
         _tail = 0;
         _full = false;
-        core_util_critical_section_exit();
     }
 
 private:

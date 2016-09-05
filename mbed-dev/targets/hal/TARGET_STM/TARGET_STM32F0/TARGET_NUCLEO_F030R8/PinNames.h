@@ -36,22 +36,11 @@
 extern "C" {
 #endif
 
-#define STM_PIN_DATA(MODE, PUPD, AFNUM)  ((int)(((MODE  & 0x0F) << 0) |\
-                                                ((PUPD  & 0x07) << 4) |\
-                                                ((AFNUM & 0x0F) << 7)))
-
-#define STM_PIN_DATA_EXT(MODE, PUPD, AFNUM, CHANNEL, INVERTED)  ((int)(((MODE     & 0x0F) <<  0) |\
-                                                                       ((PUPD     & 0x07) <<  4) |\
-                                                                       ((AFNUM    & 0x0F) <<  7) |\
-                                                                       ((CHANNEL  & 0x0F) << 11) |\
-                                                                       ((INVERTED & 0x01) << 15)))
-
+// See stm32f0xx_hal_gpio.h and stm32f0xx_hal_gpio_ex.h for values of MODE, PUPD and AFNUM
+#define STM_PIN_DATA(MODE, PUPD, AFNUM)  ((int)(((AFNUM) << 7) | ((PUPD) << 4) | ((MODE) << 0)))
 #define STM_PIN_MODE(X)   (((X) >> 0) & 0x0F)
 #define STM_PIN_PUPD(X)   (((X) >> 4) & 0x07)
 #define STM_PIN_AFNUM(X)  (((X) >> 7) & 0x0F)
-#define STM_PIN_CHANNEL(X)  (((X) >> 11) & 0x0F)
-#define STM_PIN_INVERTED(X) (((X) >> 15) & 0x01)
-
 #define STM_MODE_INPUT              (0)
 #define STM_MODE_OUTPUT_PP          (1)
 #define STM_MODE_OUTPUT_OD          (2)
@@ -139,34 +128,34 @@ typedef enum {
 
 
     // RTk.GPIO Connector Namings
-      GPIO0          = PA_1,
-      GPIO1          = PB_12,
-      GPIO2          = PB_7,
-      GPIO3          = PB_6,
-      GPIO4          = PA_8,
-      GPIO5          = PA_12,
-      GPIO6          = PA_13,
-      GPIO7          = PF_1,
-      GPIO8          = PB_5,
-      GPIO9          = PA_6,
-      GPIO10          = PA_7,
-      GPIO11          = PA_5,
-      GPIO12          = PF_0,
-      GPIO13          = PA_14,
-      GPIO14          = PA_2,
-      GPIO15          = PA_3,
-      GPIO16          = PB_8,
-      GPIO17          = PB_15,
-      GPIO18         = PB_1,
-      GPIO19         = PA_15,
-      GPIO20         = PB_9,
-      GPIO21         = PB_10,
-      GPIO22         = PA_11,
-      GPIO23         = PB_2,
-      GPIO24         = PB_3,
-      GPIO25         = PB_4,
-      GPIO26         = PB_0,
-      GPIO27         = PB_14,
+    GPIO0          = PA_1,
+    GPIO1          = PB_12,
+    GPIO2          = PB_7,
+    GPIO3          = PB_6,
+    GPIO4          = PA_8,
+    GPIO5          = PA_12,
+    GPIO6          = PA_13,
+    GPIO7          = PF_1,
+    GPIO8          = PB_5,
+    GPIO9          = PA_6,
+    GPIO10          = PA_7,
+    GPIO11          = PA_5,
+    GPIO12          = PF_0,
+    GPIO13          = PA_14,
+    GPIO14          = PA_2,
+    GPIO15          = PA_3,
+    GPIO16          = PB_8,
+    GPIO17          = PB_15,
+    GPIO18         = PB_1,
+    GPIO19         = PA_15,
+    GPIO20         = PB_9,
+    GPIO21         = PB_10,
+    GPIO22         = PA_11,
+    GPIO23         = PB_2,
+    GPIO24         = PB_3,
+    GPIO25         = PB_4,
+    GPIO26         = PB_0,
+    GPIO27         = PB_14,
 
     // Generic signals namings
     LED1        = PA_5,

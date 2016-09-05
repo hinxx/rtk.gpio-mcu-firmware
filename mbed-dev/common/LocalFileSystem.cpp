@@ -108,7 +108,6 @@ FILEHANDLE local_file_open(const char* name, int flags) {
 }
 
 LocalFileHandle::LocalFileHandle(FILEHANDLE fh) : _fh(fh), pos(0) {
-    // No lock needed in constructor
 }
 
 int LocalFileHandle::close() {
@@ -118,32 +117,24 @@ int LocalFileHandle::close() {
 }
 
 ssize_t LocalFileHandle::write(const void *buffer, size_t length) {
-    lock();
     ssize_t n = semihost_write(_fh, (const unsigned char*)buffer, length, 0); // number of characters not written
     n = length - n; // number of characters written
     pos += n;
-    unlock();
     return n;
 }
 
 ssize_t LocalFileHandle::read(void *buffer, size_t length) {
-    lock();
     ssize_t n = semihost_read(_fh, (unsigned char*)buffer, length, 0); // number of characters not read
     n = length - n; // number of characters read
     pos += n;
-    unlock();
     return n;
 }
 
 int LocalFileHandle::isatty() {
-    lock();
-    int ret = semihost_istty(_fh);
-    unlock();
-    return ret;
+    return semihost_istty(_fh);
 }
 
 off_t LocalFileHandle::lseek(off_t position, int whence) {
-    lock();
     if (whence == SEEK_CUR) {
         position += pos;
     } else if (whence == SEEK_END) {
@@ -153,30 +144,15 @@ off_t LocalFileHandle::lseek(off_t position, int whence) {
     /* Always seems to return -1, so just ignore for now. */
     semihost_seek(_fh, position);
     pos = position;
-    unlock();
     return position;
 }
 
 int LocalFileHandle::fsync() {
-    lock();
-    int ret = semihost_ensure(_fh);
-    unlock();
-    return ret;
+    return semihost_ensure(_fh);
 }
 
 off_t LocalFileHandle::flen() {
-    lock();
-    off_t off = semihost_flen(_fh);
-    unlock();
-    return off;
-}
-
-void LocalFileHandle::lock() {
-    _mutex.lock();
-}
-
-void LocalFileHandle::unlock() {
-    _mutex.unlock();
+    return semihost_flen(_fh);
 }
 
 class LocalDirHandle : public DirHandle {
@@ -189,56 +165,32 @@ public:
     }
 
     virtual int closedir() {
-        // No lock can be used in destructor
         delete this;
         return 0;
     }
 
     virtual struct dirent *readdir() {
-        lock();
         if (xffind("*", &info)!=0) {
-            unlock();
             return NULL;
         }
         memcpy(cur_entry.d_name, info.name, sizeof(info.name));
-        unlock();
         return &cur_entry;
     }
 
     virtual void rewinddir() {
-        lock();
         info.fileID = 0;
-        unlock();
     }
 
     virtual off_t telldir() {
-        lock();
-        int fileId = info.fileID;
-        unlock();
-        return fileId;
+        return info.fileID;
     }
 
     virtual void seekdir(off_t offset) {
-        lock();
         info.fileID = offset;
-        unlock();
-    }
-
-protected:
-    PlatformMutex _mutex;
-
-    virtual void lock() {
-        _mutex.lock();
-    }
-
-    virtual void unlock() {
-        _mutex.unlock();
     }
 };
 
 FileHandle *LocalFileSystem::open(const char* name, int flags) {
-    // No global state modified so function is thread safe
-
     /* reject filenames with / in them */
     for (const char *tmp = name; *tmp; tmp++) {
         if (*tmp == '/') {
@@ -259,14 +211,10 @@ FileHandle *LocalFileSystem::open(const char* name, int flags) {
 }
 
 int LocalFileSystem::remove(const char *filename) {
-    // No global state modified so function is thread safe
-
     return semihost_remove(filename);
 }
 
 DirHandle *LocalFileSystem::opendir(const char *name) {
-    // No global state modified so function is thread safe
-
     return new LocalDirHandle();
 }
 

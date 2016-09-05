@@ -28,7 +28,7 @@ extern "C" {
 #ifndef __CC_ARM
 
 #if defined(__ICCARM__)
-static inline int __semihost(int reason, const void *arg) {
+inline int __semihost(int reason, const void *arg) {
     return __semihosting(reason, (void*)arg);
 }
 #else

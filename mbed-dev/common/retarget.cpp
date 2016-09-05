@@ -21,10 +21,6 @@
 #include "toolchain.h"
 #include "semihost_api.h"
 #include "mbed_interface.h"
-#include "SingletonPtr.h"
-#include "PlatformMutex.h"
-#include "mbed_error.h"
-#include <stdlib.h>
 #if DEVICE_STDIO_MESSAGES
 #include <stdio.h>
 #endif
@@ -54,8 +50,6 @@
 #   define PREFIX(x)    x
 #endif
 
-#define FILE_HANDLE_RESERVED    0xFFFFFFFF
-
 using namespace mbed;
 
 #if defined(__MICROLIB) && (__ARMCC_VERSION>5030000)
@@ -70,45 +64,31 @@ extern const char __stdout_name[] = "/stdout";
 extern const char __stderr_name[] = "/stderr";
 #endif
 
-// Heap limits - only used if set
-unsigned char *mbed_heap_start = 0;
-uint32_t mbed_heap_size = 0;
-
 /* newlib has the filehandle field in the FILE struct as a short, so
  * we can't just return a Filehandle* from _open and instead have to
  * put it in a filehandles array and return the index into that array
  * (or rather index+3, as filehandles 0-2 are stdin/out/err).
  */
 static FileHandle *filehandles[OPEN_MAX];
-static SingletonPtr<PlatformMutex> filehandle_mutex;
 
 FileHandle::~FileHandle() {
-    filehandle_mutex->lock();
     /* Remove all open filehandles for this */
     for (unsigned int fh_i = 0; fh_i < sizeof(filehandles)/sizeof(*filehandles); fh_i++) {
         if (filehandles[fh_i] == this) {
             filehandles[fh_i] = NULL;
         }
     }
-    filehandle_mutex->unlock();
 }
 
 #if DEVICE_SERIAL
 extern int stdio_uart_inited;
 extern serial_t stdio_uart;
-#if MBED_CONF_CORE_STDIO_CONVERT_NEWLINES
-static char stdio_in_prev;
-static char stdio_out_prev;
-#endif
 #endif
 
 static void init_serial() {
 #if DEVICE_SERIAL
     if (stdio_uart_inited) return;
     serial_init(&stdio_uart, STDIO_UART_TX, STDIO_UART_RX);
-#if MBED_CONF_CORE_STDIO_BAUD_RATE
-    serial_baud(&stdio_uart, MBED_CONF_CORE_STDIO_BAUD_RATE);
-#endif
 #endif
 }
 
@@ -170,17 +150,13 @@ extern "C" FILEHANDLE PREFIX(_open)(const char* name, int openmode) {
     #endif
 
     // find the first empty slot in filehandles
-    filehandle_mutex->lock();
     unsigned int fh_i;
     for (fh_i = 0; fh_i < sizeof(filehandles)/sizeof(*filehandles); fh_i++) {
         if (filehandles[fh_i] == NULL) break;
     }
     if (fh_i >= sizeof(filehandles)/sizeof(*filehandles)) {
-        filehandle_mutex->unlock();
         return -1;
     }
-    filehandles[fh_i] = (FileHandle*)FILE_HANDLE_RESERVED;
-    filehandle_mutex->unlock();
 
     FileHandle *res;
 
@@ -194,29 +170,19 @@ extern "C" FILEHANDLE PREFIX(_open)(const char* name, int openmode) {
     } else {
         FilePath path(name);
 
-        if (!path.exists()) {
-            // Free file handle
-            filehandles[fh_i] = NULL;
+        if (!path.exists())
             return -1;
-        } else if (path.isFile()) {
+        else if (path.isFile()) {
             res = path.file();
         } else {
             FileSystemLike *fs = path.fileSystem();
-            if (fs == NULL) {
-                // Free file handle
-                filehandles[fh_i] = NULL;
-                return -1;
-            }
+            if (fs == NULL) return -1;
             int posix_mode = openmode_to_posix(openmode);
             res = fs->open(path.fileName(), posix_mode); /* NULL if fails */
         }
     }
 
-    if (res == NULL) {
-        // Free file handle
-        filehandles[fh_i] = NULL;
-        return -1;
-    }
+    if (res == NULL) return -1;
     filehandles[fh_i] = res;
 
     return fh_i + 3; // +3 as filehandles 0-2 are stdin/out/err
@@ -241,19 +207,9 @@ extern "C" int PREFIX(_write)(FILEHANDLE fh, const unsigned char *buffer, unsign
     if (fh < 3) {
 #if DEVICE_SERIAL
         if (!stdio_uart_inited) init_serial();
-#if MBED_CONF_CORE_STDIO_CONVERT_NEWLINES
-        for (unsigned int i = 0; i < length; i++) {
-            if (buffer[i] == '\n' && stdio_out_prev != '\r') {
-                 serial_putc(&stdio_uart, '\r');
-            }
-            serial_putc(&stdio_uart, buffer[i]);
-            stdio_out_prev = buffer[i];
-        }
-#else
         for (unsigned int i = 0; i < length; i++) {
             serial_putc(&stdio_uart, buffer[i]);
         }
-#endif
 #endif
         n = length;
     } else {
@@ -279,28 +235,7 @@ extern "C" int PREFIX(_read)(FILEHANDLE fh, unsigned char *buffer, unsigned int 
         // only read a character at a time from stdin
 #if DEVICE_SERIAL
         if (!stdio_uart_inited) init_serial();
-#if MBED_CONF_CORE_STDIO_CONVERT_NEWLINES
-        while (true) {
-            char c = serial_getc(&stdio_uart);
-            if ((c == '\r' && stdio_in_prev != '\n') ||
-                (c == '\n' && stdio_in_prev != '\r')) {
-                stdio_in_prev = c;
-                *buffer = '\n';
-                break;
-            } else if ((c == '\r' && stdio_in_prev == '\n') ||
-                       (c == '\n' && stdio_in_prev == '\r')) {
-                stdio_in_prev = c;
-                // onto next character
-                continue;
-            } else {
-                stdio_in_prev = c;
-                *buffer = c;
-                break;
-            }
-        }
-#else
         *buffer = serial_getc(&stdio_uart);
-#endif
 #endif
         n = 1;
     } else {
@@ -477,48 +412,6 @@ extern "C" WEAK void __cxa_pure_virtual(void) {
 
 #endif
 
-#if defined(TOOLCHAIN_GCC)
-#ifdef   FEATURE_UVISOR
-#include "uvisor-lib/uvisor-lib.h"
-#endif/* FEATURE_UVISOR */
-
-#ifndef  FEATURE_UVISOR
-extern "C" {
-void * __wrap__malloc_r(struct _reent * r, size_t size) {
-    extern void * __real__malloc_r(struct _reent * r, size_t size);
-    return __real__malloc_r(r, size);
-}
-void * __wrap__realloc_r(struct _reent * r, void * ptr, size_t size) {
-    extern void * __real__realloc_r(struct _reent * r, void * ptr, size_t size);
-    return __real__realloc_r(r, ptr, size);
-}
-void __wrap__free_r(struct _reent * r, void * ptr) {
-    extern void __real__free_r(struct _reent * r, void * ptr);
-    __real__free_r(r, ptr);
-}
-}
-#endif/* FEATURE_UVISOR */
-
-extern "C" WEAK void software_init_hook_rtos(void)
-{
-    // Do nothing by default.
-}
-
-extern "C" void software_init_hook(void)
-{
-#ifdef   FEATURE_UVISOR
-    int return_code;
-
-    return_code = uvisor_lib_init();
-    if (return_code) {
-        mbed_die();
-    }
-#endif/* FEATURE_UVISOR */
-
-    software_init_hook_rtos();
-}
-#endif
-
 // ****************************************************************************
 // mbed_main is a function that is called before main()
 // mbed_sdk_init() is also a function that is called before main(), but unlike
@@ -556,6 +449,7 @@ extern "C" int __wrap_main(void) {
 // code will call a function to setup argc and argv (__iar_argc_argv) if it is defined.
 // Since mbed doesn't use argc/argv, we use this function to call our mbed_main.
 extern "C" void __iar_argc_argv() {
+    mbed_sdk_init();
     mbed_main();
 }
 #endif
@@ -563,7 +457,7 @@ extern "C" void __iar_argc_argv() {
 // Provide implementation of _sbrk (low-level dynamic memory allocation
 // routine) for GCC_ARM which compares new heap pointer with MSP instead of
 // SP.  This make it compatible with RTX RTOS thread stacks.
-#if defined(TOOLCHAIN_GCC_ARM) || defined(TOOLCHAIN_GCC_CR)
+#if defined(TOOLCHAIN_GCC_ARM)
 // Linker defined symbol used by _sbrk to indicate where heap should start.
 extern "C" int __end__;
 
@@ -579,13 +473,6 @@ extern "C" int errno;
 register unsigned char * stack_ptr __asm ("sp");
 
 // Dynamic memory allocation related syscall.
-#if defined(TARGET_NUMAKER_PFM_NUC472)
-// Overwrite _sbrk() to support two region model.
-extern "C" void *__wrap__sbrk(int incr);
-extern "C" caddr_t _sbrk(int incr) {
-    return (caddr_t) __wrap__sbrk(incr);
-}
-#else
 extern "C" caddr_t _sbrk(int incr) {
     static unsigned char* heap = (unsigned char*)&__end__;
     unsigned char*        prev_heap = heap;
@@ -602,19 +489,13 @@ extern "C" caddr_t _sbrk(int incr) {
         return (caddr_t)-1;
     }
 
-    // Additional heap checking if set
-    if (mbed_heap_size && (new_heap >= mbed_heap_start + mbed_heap_size)) {
-        errno = ENOMEM;
-        return (caddr_t)-1;
-    }
-
     heap = new_heap;
     return (caddr_t) prev_heap;
 }
 #endif
-#endif
 
-#if defined(TOOLCHAIN_GCC_ARM) || defined(TOOLCHAIN_GCC_CR)
+
+#if defined TOOLCHAIN_GCC_ARM
 extern "C" void _exit(int return_code) {
 #else
 namespace std {
@@ -638,7 +519,7 @@ extern "C" void exit(int return_code) {
     while (1);
 }
 
-#if !defined(TOOLCHAIN_GCC_ARM) && !defined(TOOLCHAIN_GCC_CR)
+#if !defined(TOOLCHAIN_GCC_ARM)
 } //namespace std
 #endif
 
@@ -684,76 +565,4 @@ char* mbed_gets(char*s, int size, FILE *_file){
 #endif
 }
 
-#if defined (__ICCARM__)
-// Stub out locks when an rtos is not present
-extern "C" WEAK void __iar_system_Mtxinit(__iar_Rmtx *mutex) {}
-extern "C" WEAK void __iar_system_Mtxdst(__iar_Rmtx *mutex) {}
-extern "C" WEAK void __iar_system_Mtxlock(__iar_Rmtx *mutex) {}
-extern "C" WEAK void __iar_system_Mtxunlock(__iar_Rmtx *mutex) {}
-extern "C" WEAK void __iar_file_Mtxinit(__iar_Rmtx *mutex) {}
-extern "C" WEAK void __iar_file_Mtxdst(__iar_Rmtx *mutex) {}
-extern "C" WEAK void __iar_file_Mtxlock(__iar_Rmtx *mutex) {}
-extern "C" WEAK void __iar_file_Mtxunlock(__iar_Rmtx *mutex) {}
-#elif defined(__CC_ARM)
-// Do nothing
-#elif defined (__GNUC__)
-struct _reent;
-// Stub out locks when an rtos is not present
-extern "C" WEAK void __rtos_malloc_lock( struct _reent *_r ) {}
-extern "C" WEAK void __rtos_malloc_unlock( struct _reent *_r ) {}
-extern "C" WEAK void __rtos_env_lock( struct _reent *_r ) {}
-extern "C" WEAK void __rtos_env_unlock( struct _reent *_r ) {}
-
-extern "C" void __malloc_lock( struct _reent *_r )
-{
-    __rtos_malloc_lock(_r);
-}
-
-extern "C" void __malloc_unlock( struct _reent *_r )
-{
-    __rtos_malloc_unlock(_r);
-}
-
-extern "C" void __env_lock( struct _reent *_r )
-{
-    __rtos_env_lock(_r);
-}
-
-extern "C" void __env_unlock( struct _reent *_r )
-{
-    __rtos_env_unlock(_r);
-}
-#endif
-
 } // namespace mbed
-
-void *operator new(std::size_t count)
-{
-    void *buffer = malloc(count);
-    if (NULL == buffer) {
-        error("Operator new out of memory\r\n");
-    }
-    return buffer;
-}
-
-void *operator new[](std::size_t count)
-{
-    void *buffer = malloc(count);
-    if (NULL == buffer) {
-        error("Operator new[] out of memory\r\n");
-    }
-    return buffer;
-}
-
-void operator delete(void *ptr)
-{
-    if (ptr != NULL) {
-        free(ptr);
-    }
-}
-void operator delete[](void *ptr)
-{
-    if (ptr != NULL) {
-        free(ptr);
-    }
-}

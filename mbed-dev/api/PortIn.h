@@ -21,13 +21,10 @@
 #if DEVICE_PORTIN
 
 #include "port_api.h"
-#include "critical.h"
 
 namespace mbed {
 
 /** A multiple pin digital input
- *
- * @Note Synchronization level: Interrupt safe
  *
  *  Example:
  * @code
@@ -59,9 +56,7 @@ public:
      *  @param mask A bitmask to identify which bits in the port should be included (0 - ignore)
         */
     PortIn(PortName port, int mask = 0xFFFFFFFF) {
-        core_util_critical_section_enter();
         port_init(&_port, port, mask, PIN_INPUT);
-        core_util_critical_section_exit();
     }
 
     /** Read the value currently output on the port
@@ -78,9 +73,7 @@ public:
      *  @param mode PullUp, PullDown, PullNone, OpenDrain
      */
     void mode(PinMode mode) {
-        core_util_critical_section_enter();
         port_mode(&_port, mode);
-        core_util_critical_section_exit();
     }
 
     /** A shorthand for read()

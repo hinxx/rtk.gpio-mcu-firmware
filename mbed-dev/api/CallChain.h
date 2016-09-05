@@ -16,7 +16,7 @@
 #ifndef MBED_CALLCHAIN_H
 #define MBED_CALLCHAIN_H
 
-#include "Callback.h"
+#include "FunctionPointer.h"
 #include <string.h>
 
 namespace mbed {
@@ -24,8 +24,6 @@ namespace mbed {
 /** Group one or more functions in an instance of a CallChain, then call them in
  * sequence using CallChain::call(). Used mostly by the interrupt chaining code,
  * but can be used for other purposes.
- *
- * @Note Synchronization level: Not protected
  *
  * Example:
  * @code
@@ -59,8 +57,7 @@ namespace mbed {
  * @endcode
  */
 
-typedef Callback<void()> *pFunctionPointer_t;
-class CallChainLink;
+typedef FunctionPointer* pFunctionPointer_t;
 
 class CallChain {
 public:
@@ -73,34 +70,34 @@ public:
 
     /** Add a function at the end of the chain
      *
-     *  @param func A pointer to a void function
+     *  @param function A pointer to a void function
      *
      *  @returns
-     *  The function object created for 'func'
+     *  The function object created for 'function'
      */
-    pFunctionPointer_t add(Callback<void()> func);
+    pFunctionPointer_t add(void (*function)(void));
 
     /** Add a function at the end of the chain
      *
-     *  @param obj pointer to the object to call the member function on
-     *  @param method pointer to the member function to be called
+     *  @param tptr pointer to the object to call the member function on
+     *  @param mptr pointer to the member function to be called
      *
      *  @returns
-     *  The function object created for 'obj' and 'method'
+     *  The function object created for 'tptr' and 'mptr'
      */
-    template<typename T, typename M>
-    pFunctionPointer_t add(T *obj, M method) {
-        return add(Callback<void()>(obj, method));
+    template<typename T>
+    pFunctionPointer_t add(T *tptr, void (T::*mptr)(void)) {
+        return common_add(new FunctionPointer(tptr, mptr));
     }
 
     /** Add a function at the beginning of the chain
      *
-     *  @param func A pointer to a void function
+     *  @param function A pointer to a void function
      *
      *  @returns
-     *  The function object created for 'func'
+     *  The function object created for 'function'
      */
-    pFunctionPointer_t add_front(Callback<void()> func);
+    pFunctionPointer_t add_front(void (*function)(void));
 
     /** Add a function at the beginning of the chain
      *
@@ -110,9 +107,9 @@ public:
      *  @returns
      *  The function object created for 'tptr' and 'mptr'
      */
-    template<typename T, typename M>
-    pFunctionPointer_t add_front(T *obj, M method) {
-        return add_front(Callback<void()>(obj, method));
+    template<typename T>
+    pFunctionPointer_t add_front(T *tptr, void (T::*mptr)(void)) {
+        return common_add_front(new FunctionPointer(tptr, mptr));
     }
 
     /** Get the number of functions in the chain
@@ -154,20 +151,31 @@ public:
      */
     void call();
 
+#ifdef MBED_OPERATORS
     void operator ()(void) {
         call();
     }
     pFunctionPointer_t operator [](int i) const {
         return get(i);
     }
+#endif
+
+private:
+    void _check_size();
+    pFunctionPointer_t common_add(pFunctionPointer_t pf);
+    pFunctionPointer_t common_add_front(pFunctionPointer_t pf);
+
+    pFunctionPointer_t* _chain;
+    int _size;
+    int _elements;
 
     /* disallow copy constructor and assignment operators */
 private:
     CallChain(const CallChain&);
     CallChain & operator = (const CallChain&);
-    CallChainLink *_chain;
 };
 
 } // namespace mbed
 
 #endif
+

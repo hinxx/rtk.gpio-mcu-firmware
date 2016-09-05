@@ -23,8 +23,6 @@ namespace mbed {
 
 /** A general purpose timer
  *
- * @Note Synchronization level: Interrupt safe
- *
  * Example:
  * @code
  * // Count the time to toggle a LED
@@ -76,9 +74,9 @@ public:
      */
     int read_us();
 
-    /** An operator shorthand for read()
-     */
+#ifdef MBED_OPERATORS
     operator float();
+#endif
 
 protected:
     int slicetime();
