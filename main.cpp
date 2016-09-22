@@ -110,12 +110,13 @@ int main() {
 
     /* Setup the serial port at baudrate and send ready message */
     serialPort.baud(BAUD_RATE);
-    serialPort.printf("RTk.GPIO Is ready");
+    serialPort.printf("RTk.GPIO Ready");
 
     /*
     * Uncomment the below line for clock speed reporting. Useful for debugging
-    * serialPort.printf("SystemCoreClock = %d Hz\n",SystemCoreClock);
     */
+    serialPort.printf("SystemCoreClock = %d Hz\n",SystemCoreClock);
+
 
     /* Now the main loop that repeats forever */
     while(1) {
@@ -125,10 +126,8 @@ int main() {
             /* Serial port is available, get the character sent */
             char pinch = (char) serialPort.getc();
 
-            /* TO-DO Maybe optimise this. If its not lowercase or uppercase the \r and \n check shouldn't be needed */
+            /* TO-DO Maybe optimize this. If its not lowercase or uppercase the \r and \n check shouldn't be needed */
             /* If its not a return or newline command */
-            if(pinch != '\r' && pinch != '\n')
-            {
                 /* If its a uppercase it will be a "Global" Command so send it to that handler. */
                 if(pinch >= 'A' && pinch <= 'Z') {
                     char paramch = (char) serialPort.getc();
@@ -140,12 +139,17 @@ int main() {
                     char cmdch = (char) serialPort.getc();
                     gpio(pinch, cmdch);
                 }
+                /*If it's a newline or return command ignore */
+                else if(pinch !='\r' && pinch !='\n' )
+                {
+                	/* Do Nothing */
+                }
                 /* If it gets this far its a dud command and we don't want it */
                 else
                 {
                     error(ERROR_UNKNOWN_COMMAND);
                 }
-            }
+
         }
 
     }
@@ -312,9 +316,10 @@ static void gpio(char pinch, char cmdch)
         char pinC;
         pinC = pin;
 
-        serialPort.putc(pinC);
+        /*serialPort.putc(pin);
 
-        serialPort.putc('\n');
+        serialPort.putc('\r');
+        serialPort.putc('\n');*/
 
         ioPin = pin;
 
