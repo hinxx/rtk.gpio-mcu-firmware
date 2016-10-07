@@ -27,6 +27,7 @@ Serial serialPort(SERIAL_TX, SERIAL_RX);
 #define BAUD_RATE 230400
 
 
+
 /* Define the lowest and highest GPIO pins. For this its 0-27 */
 #define MIN_PIN 0
 #define MAX_PIN 27
@@ -110,6 +111,7 @@ int main() {
 
     /* Setup the serial port at baudrate and send ready message */
     serialPort.baud(BAUD_RATE);
+    serialPort.format(8,mbed::SerialBase::None,1);
     serialPort.printf("RTk.GPIO Ready");
 
     /*
