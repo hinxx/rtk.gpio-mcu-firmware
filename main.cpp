@@ -21,7 +21,7 @@
 Serial serialPort(SERIAL_TX, SERIAL_RX);
 
 /* AnyIO requests the version if V is sent, Version is now compiled date */
-#define VERSION_STR "RTkGPIO 2016-09-03"
+#define VERSION_STR "RTkGPIO 2016-10-08"
 
 /* Set the serial baudrate. 230400 has tested stable on all platforms. (WIN,MAC,NIX) */
 #define BAUD_RATE 230400
