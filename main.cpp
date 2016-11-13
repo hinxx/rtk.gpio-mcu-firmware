@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 /* Import third party lib to do SoftPWM */
-#include "SoftPWM.h"
 #include "math.h"
 
 /* Setup the serial port on the default pins for the RTk.GPIO */
@@ -54,11 +53,6 @@ static void error(int code);
 static int ioPin;
 static int p;
 
-/* TO-DO - Proper Comment */
-I2C i2c(GPIO2,GPIO3);
-/* TO-DO - Proper Comment */
-AnalogIn AIO11(GPIO11);
-//PwmOut PIO22(GPIO22);
 
 /* Define all of the IO pins as DigitalInOut */
 DigitalInOut IO0(GPIO0);
@@ -67,14 +61,14 @@ DigitalInOut IO2(GPIO2);
 DigitalInOut IO3(GPIO3);
 DigitalInOut IO4(GPIO4);
 DigitalInOut IO5(GPIO5);
-DigitalInOut IO6(GPIO6);    /* Comment out for debug mode */
+//DigitalInOut IO6(GPIO6);    /* Comment out for debug mode */
 DigitalInOut IO7(GPIO7);
 DigitalInOut IO8(GPIO8);
 DigitalInOut IO9(GPIO9);
 DigitalInOut IO10(GPIO10);
 DigitalInOut IO11(GPIO11);
 DigitalInOut IO12(GPIO12);
-DigitalInOut IO13(GPIO13);  /* Comment out for debug mode */
+//DigitalInOut IO13(GPIO13);  /* Comment out for debug mode */
 DigitalInOut IO14(GPIO14);
 DigitalInOut IO15(GPIO15);
 DigitalInOut IO16(GPIO16);
@@ -91,9 +85,19 @@ DigitalInOut IO26(GPIO26);
 DigitalInOut IO27(GPIO27);
 
 
+
+
+
+/* TO-DO - Proper Comment */
+I2C i2c(GPIO2,GPIO3);
+
+/* Uncomment these two lines if you comment out the ones above for debugging mdoe */
+DigitalInOut IO6(NC);
+DigitalInOut IO13(NC);
+
 /* Define list of Pins */
 DigitalInOut gpios[] = {IO0,IO1,IO2,IO3,IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
-AnalogIn agpios[] = {AIO11};
+
 
 
 //DigitalInOut gpios[] = {IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
@@ -204,21 +208,21 @@ static void command(char cmdch, char paramch)
         switch(paramch) {
             case 'W': {
                 //Write to I2C Bus
-                char i2cAddrN[2];
-                int i2caddr = (int)  serialPort.getc();
-                int i2cBlocks = (int)serialPort.getc() - 47;
+            	///Error then jumps to here in debugging
+                int i2caddr = (int)serialPort.getc();
+                int i2cBlocks = (int)serialPort.getc();
+
                 int curBlock = 0;
-                char cmdBlk[2];
-                char blockData[2];
+                char cmdBlk[20];
                 while(curBlock < i2cBlocks) {
                     //Get Block
                     cmdBlk[curBlock] = (int)serialPort.getc();
 
                     curBlock++;
                 }
-                //Write I2C Data
-                i2c.write(i2caddr,cmdBlk,i2cBlocks);
 
+                //Write I2C Data
+                i2c.write(i2caddr,cmdBlk,i2cBlocks);  //Error, this line runs first
             }
             break;
 
@@ -251,7 +255,7 @@ static void command(char cmdch, char paramch)
                     i2c.write(i2caddrT,cmd,2);
 
                     cmd[0] = 0x13;
-                    cmd[1] = 0xFF;
+                    cmd[1] = 0xBD;
                     i2c.write(i2caddrT,cmd,2);
                     cmd[0] = 0x14;
                     cmd[1] = 0xFF;
@@ -328,7 +332,7 @@ static void gpio(char pinch, char cmdch)
         switch (cmdch)
         {
 
-            case 'A':
+            /*case 'A':
             {
             //ioPin = pin -2;
 
@@ -345,7 +349,7 @@ static void gpio(char pinch, char cmdch)
                 //serialPort.printf("SystemCoreClock = %c Hz\n",a8In);
 
             break;
-            }
+            }*/
 
             case 'I': //Set as input
                 //ioPin = pin - 2;

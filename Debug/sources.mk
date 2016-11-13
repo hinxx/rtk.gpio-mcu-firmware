@@ -32,7 +32,6 @@ SUBDIRS := \
 .build/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8 \
 .build/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0 \
 .metadata/.plugins/org.eclipse.cdt.make.core \
-SoftPWM \
 . \
 mbed-dev/common \
 mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/TOOLCHAIN_GCC_ARM \
