@@ -214,7 +214,7 @@ static void command(char cmdch, char paramch)
 
                 int curBlock = 0;
                 char cmdBlk[20];
-                while(curBlock < i2cBlocks) {
+                while(curBlock <= i2cBlocks) {
                     //Get Block
                     cmdBlk[curBlock] = (int)serialPort.getc();
 
@@ -222,7 +222,7 @@ static void command(char cmdch, char paramch)
                 }
 
                 //Write I2C Data
-                i2c.write(i2caddr,cmdBlk,i2cBlocks);  //Error, this line runs first
+                i2c.write(i2caddr,cmdBlk,i2cBlocks+1);  //Error, this line runs first
             }
             break;
 
