@@ -135,7 +135,7 @@
                call the 2 first functions listed above, since SystemCoreClock variable is 
                updated automatically.
   */
-uint32_t SystemCoreClock = 48000000;
+uint32_t SystemCoreClock = 46000000; //Overclock
 
 const uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
 
@@ -442,7 +442,7 @@ uint8_t SetSysClock_PLL_HSI(void)
   RCC_OscInitStruct.PLL.PLLState            = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource           = RCC_PLLSOURCE_HSI; // HSI div 2
   RCC_OscInitStruct.PLL.PREDIV              = RCC_PREDIV_DIV1;
-  RCC_OscInitStruct.PLL.PLLMUL              = RCC_PLL_MUL12;
+  RCC_OscInitStruct.PLL.PLLMUL              = RCC_PLL_MUL16; //Overclock
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
       return 0; // FAIL
   }

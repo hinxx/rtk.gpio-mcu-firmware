@@ -1,4 +1,4 @@
-/*
+/*/*
 * RTk.GPIO Microcontroller Firmware
 * Copyright (C) Ryanteck LTD. (R) 2016. Licensed under GNU GPL V3
 * For full license information please read License.MD
@@ -20,7 +20,7 @@
 Serial serialPort(SERIAL_TX, SERIAL_RX);
 
 /* AnyIO requests the version if V is sent, Version is now compiled date */
-#define VERSION_STR "RTkGPIO 2016-10-08"
+#define VERSION_STR "RTkGPIO 2016-12-13-A"
 
 /* Set the serial baudrate. 230400 has tested stable on all platforms. (WIN,MAC,NIX) */
 #define BAUD_RATE 230400
@@ -46,7 +46,7 @@ enum
 
 static void command(char cmdch, char paramch);
 static void gpio(char pinch, char cmdch);
-static void agpio(char pinch, char cmdch);
+//static void agpio(char pinch, char cmdch);
 static void error(int code);
 
 /* TO-DO - Proper Comment */
@@ -61,14 +61,14 @@ DigitalInOut IO2(GPIO2);
 DigitalInOut IO3(GPIO3);
 DigitalInOut IO4(GPIO4);
 DigitalInOut IO5(GPIO5);
-//DigitalInOut IO6(GPIO6);    /* Comment out for debug mode */
+DigitalInOut IO6(GPIO6);    /* Comment out for debug mode */
 DigitalInOut IO7(GPIO7);
 DigitalInOut IO8(GPIO8);
 DigitalInOut IO9(GPIO9);
 DigitalInOut IO10(GPIO10);
 DigitalInOut IO11(GPIO11);
 DigitalInOut IO12(GPIO12);
-//DigitalInOut IO13(GPIO13);  /* Comment out for debug mode */
+DigitalInOut IO13(GPIO13);  /* Comment out for debug mode */
 DigitalInOut IO14(GPIO14);
 DigitalInOut IO15(GPIO15);
 DigitalInOut IO16(GPIO16);
@@ -85,15 +85,12 @@ DigitalInOut IO26(GPIO26);
 DigitalInOut IO27(GPIO27);
 
 
-
-
-
 /* TO-DO - Proper Comment */
 I2C i2c(GPIO2,GPIO3);
 
 /* Uncomment these two lines if you comment out the ones above for debugging mdoe */
-DigitalInOut IO6(NC);
-DigitalInOut IO13(NC);
+/*DigitalInOut IO6(NC);
+DigitalInOut IO13(NC);*/
 
 /* Define list of Pins */
 DigitalInOut gpios[] = {IO0,IO1,IO2,IO3,IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
@@ -208,7 +205,6 @@ static void command(char cmdch, char paramch)
         switch(paramch) {
             case 'W': {
                 //Write to I2C Bus
-            	///Error then jumps to here in debugging
                 int i2caddr = (int)serialPort.getc();
                 int i2cBlocks = (int)serialPort.getc();
 
@@ -227,51 +223,29 @@ static void command(char cmdch, char paramch)
             break;
 
             case 'R': {
-                            //Read from I2C Bus
-                            char i2cAddrN[2];
-                            int i2caddr = (int)  serialPort.getc();
-                            int i2cBlocks = (int)serialPort.getc() - 47;
-                            int curBlock = 0;
-                            char cmdBlk[2];
-                            char blockData[2];
-                            while(curBlock < i2cBlocks) {
-                                //Get Block
-                                cmdBlk[curBlock] = (int)serialPort.getc();
+                //Read to I2C Bus
+                int i2caddr = (int)serialPort.getc();
+                int curBlock = 0;
+                int i2cBlocks = 2;
+                char cmdBlk[i2cBlocks];
+                cmdBlk[0] = (int)serialPort.getc();
 
-                                curBlock++;
-                            }
-                            //Write I2C Data
-                            i2c.write(i2caddr,cmdBlk,i2cBlocks);
+                //Write I2C Data
+                i2c.read(i2caddr,cmdBlk,2);
+                while (curBlock < i2cBlocks) {
+                	serialPort.putc(cmdBlk[curBlock]);
+                	curBlock++;
+                }
+                //serialPort.put(pinC);
+                //serialPort.putc(pinch);
+                //serialPort.printf(p?"1":"0");
+                //serialPort.putc('\r');
+                //serialPort.putc('\n');
 
-                        }
+            }
                         break;
 
-            case 'T':
-                static int i2caddrT =0xA8;
-                        //test I2C Bus
-                char cmd[2];
-                    cmd[0] = 0x00;
-                    cmd[1] = 0x01;
-                    i2c.write(i2caddrT,cmd,2);
 
-                    cmd[0] = 0x13;
-                    cmd[1] = 0xBD;
-                    i2c.write(i2caddrT,cmd,2);
-                    cmd[0] = 0x14;
-                    cmd[1] = 0xFF;
-                    i2c.write(i2caddrT,cmd,2);
-                    cmd[0] = 0x15;
-                    cmd[1] = 0xFF;
-                    i2c.write(i2caddrT,cmd,2);
-
-                    //Write white led
-                    cmd[0] = 0x0A;
-                    cmd[1] = 0xFF;
-                    i2c.write(i2caddrT,cmd,2);
-                    cmd[0] = 0x16;
-                    i2c.write(i2caddrT,cmd,2);
-
-                break;
         }
 
     break;
