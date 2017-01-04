@@ -20,7 +20,7 @@
 Serial serialPort(SERIAL_TX, SERIAL_RX);
 
 /* AnyIO requests the version if V is sent, Version is now compiled date */
-#define VERSION_STR "RTkGPIO 2016-12-13-A"
+#define VERSION_STR "RTkGPIO 2016-01-02"
 
 /* Set the serial baudrate. 230400 has tested stable on all platforms. (WIN,MAC,NIX) */
 #define BAUD_RATE 230400
@@ -61,14 +61,14 @@ DigitalInOut IO2(GPIO2);
 DigitalInOut IO3(GPIO3);
 DigitalInOut IO4(GPIO4);
 DigitalInOut IO5(GPIO5);
-DigitalInOut IO6(GPIO6);    /* Comment out for debug mode */
+//DigitalInOut IO6(GPIO6);    /* Comment out for debug mode */
 DigitalInOut IO7(GPIO7);
 DigitalInOut IO8(GPIO8);
 DigitalInOut IO9(GPIO9);
 DigitalInOut IO10(GPIO10);
 DigitalInOut IO11(GPIO11);
 DigitalInOut IO12(GPIO12);
-DigitalInOut IO13(GPIO13);  /* Comment out for debug mode */
+//DigitalInOut IO13(GPIO13);  /* Comment out for debug mode */
 DigitalInOut IO14(GPIO14);
 DigitalInOut IO15(GPIO15);
 DigitalInOut IO16(GPIO16);
@@ -84,13 +84,13 @@ DigitalInOut IO25(GPIO25);
 DigitalInOut IO26(GPIO26);
 DigitalInOut IO27(GPIO27);
 
-
+//SoftPWM pwm[] = {GPIO0,GPIO1,GPIO2,GPIO3,GPIO4,GPIO5,GPIO6,GPIO7,GPIO8,GPIO9,GPIO10,GPIO11,GPIO12,GPIO13,GPIO14,GPIO15,GPIO16,GPIO17,GPIO18,GPIO19,GPIO20,GPIO21,GPIO22,GPIO23,GPIO24,GPIO25,GPIO26,GPIO27};
 /* TO-DO - Proper Comment */
 I2C i2c(GPIO2,GPIO3);
 
 /* Uncomment these two lines if you comment out the ones above for debugging mdoe */
-/*DigitalInOut IO6(NC);
-DigitalInOut IO13(NC);*/
+DigitalInOut IO6(NC);
+DigitalInOut IO13(NC);
 
 /* Define list of Pins */
 DigitalInOut gpios[] = {IO0,IO1,IO2,IO3,IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
@@ -209,7 +209,7 @@ static void command(char cmdch, char paramch)
                 int i2cBlocks = (int)serialPort.getc();
 
                 int curBlock = 0;
-                char cmdBlk[20];
+                char cmdBlk[255];
                 while(curBlock <= i2cBlocks) {
                     //Get Block
                     cmdBlk[curBlock] = (int)serialPort.getc();
@@ -225,13 +225,13 @@ static void command(char cmdch, char paramch)
             case 'R': {
                 //Read to I2C Bus
                 int i2caddr = (int)serialPort.getc();
+                int i2cBlocks = (int)serialPort.getc();
                 int curBlock = 0;
-                int i2cBlocks = 2;
                 char cmdBlk[i2cBlocks];
                 cmdBlk[0] = (int)serialPort.getc();
 
                 //Write I2C Data
-                i2c.read(i2caddr,cmdBlk,2);
+                i2c.read(i2caddr,cmdBlk,i2cBlocks);
                 while (curBlock < i2cBlocks) {
                 	serialPort.putc(cmdBlk[curBlock]);
                 	curBlock++;
@@ -249,6 +249,26 @@ static void command(char cmdch, char paramch)
         }
 
     break;
+
+    /*case 'P':
+    {
+        	char pinch = (char)serialPort.getc();
+        	int pin = pinch - 'a';
+                switch(paramch) {
+
+                    case 'T': {
+                    	pwm[pin].start();
+                    }
+                    case 'P': {
+                         pwm[pin].stop();
+                    }
+
+
+                }
+    }
+     break;*/
+
+
 
 
 
@@ -372,6 +392,7 @@ static void gpio(char pinch, char cmdch)
 
                 gpios[ioPin].mode(PullNone);
             break;
+
 
 
 

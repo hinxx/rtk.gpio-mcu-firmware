@@ -1,5 +1,6 @@
 ".metadata/.plugins/org.eclipse.cdt.make.core/specs.o"
 ".metadata/.plugins/org.eclipse.cdt.make.core/specs.o"
+"SoftPWM/SoftPWM.o"
 "main.o"
 "mbed-dev/common/BusIn.o"
 "mbed-dev/common/BusInOut.o"

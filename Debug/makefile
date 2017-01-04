@@ -14,6 +14,7 @@ RM := rm -rf
 -include mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/subdir.mk
 -include mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F0/subdir.mk
 -include mbed-dev/common/subdir.mk
+-include SoftPWM/subdir.mk
 -include .metadata/.plugins/org.eclipse.cdt.make.core/subdir.mk
 -include .build/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/TARGET_NUCLEO_F030R8/subdir.mk
 -include .build/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F0/subdir.mk
