@@ -13,14 +13,13 @@
 #include "mbed.h"
 #include <stdio.h>
 #include <stdlib.h>
-/* Import third party lib to do SoftPWM */
 #include "math.h"
 
 /* Setup the serial port on the default pins for the RTk.GPIO */
 Serial serialPort(SERIAL_TX, SERIAL_RX);
 
 /* AnyIO requests the version if V is sent, Version is now compiled date */
-#define VERSION_STR "RTkGPIO 2016-01-02"
+#define VERSION_STR "RTk-2016-01-05-FINAL"
 
 /* Set the serial baudrate. 230400 has tested stable on all platforms. (WIN,MAC,NIX) */
 #define BAUD_RATE 230400
@@ -61,14 +60,14 @@ DigitalInOut IO2(GPIO2);
 DigitalInOut IO3(GPIO3);
 DigitalInOut IO4(GPIO4);
 DigitalInOut IO5(GPIO5);
-//DigitalInOut IO6(GPIO6);    /* Comment out for debug mode */
+DigitalInOut IO6(GPIO6);    /* Comment out for debug mode */
 DigitalInOut IO7(GPIO7);
 DigitalInOut IO8(GPIO8);
 DigitalInOut IO9(GPIO9);
 DigitalInOut IO10(GPIO10);
 DigitalInOut IO11(GPIO11);
 DigitalInOut IO12(GPIO12);
-//DigitalInOut IO13(GPIO13);  /* Comment out for debug mode */
+DigitalInOut IO13(GPIO13);  /* Comment out for debug mode */
 DigitalInOut IO14(GPIO14);
 DigitalInOut IO15(GPIO15);
 DigitalInOut IO16(GPIO16);
@@ -89,15 +88,11 @@ DigitalInOut IO27(GPIO27);
 I2C i2c(GPIO2,GPIO3);
 
 /* Uncomment these two lines if you comment out the ones above for debugging mdoe */
-DigitalInOut IO6(NC);
-DigitalInOut IO13(NC);
+//DigitalInOut IO6(NC);
+//DigitalInOut IO13(NC);
 
 /* Define list of Pins */
 DigitalInOut gpios[] = {IO0,IO1,IO2,IO3,IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
-
-
-
-//DigitalInOut gpios[] = {IO4,IO5,IO6,IO7,IO8,IO9,IO10,IO11,IO12,IO13,IO14,IO15,IO16,IO17,IO18,IO19,IO20,IO21,IO22, IO23, IO24,IO25,IO26,IO27};
 
 
 /* Start the main program routine */
